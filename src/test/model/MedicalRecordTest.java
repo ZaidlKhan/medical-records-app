@@ -27,6 +27,13 @@ public class MedicalRecordTest {
     }
 
     @Test
+    void testSetYear() {
+        assertEquals(mr.getYear(), 2017);
+        mr.setYear(2019);
+        assertEquals(mr.getYear(), 2019);
+    }
+
+    @Test
     void testAddSymptoms() {
         assertEquals(mr.getSymptoms().size(), 0);
         mr.addSymptoms("Cough");

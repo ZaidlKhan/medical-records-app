@@ -47,6 +47,8 @@ public class MedicalRecord {
         return null;
     }
 
+    // MODIFIES: this
+    // EFFECTS: changes the year of the object to the given year
     public void setYear(int year) {
         this.year = year;
     }

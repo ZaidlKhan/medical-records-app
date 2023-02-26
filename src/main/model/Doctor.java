@@ -24,21 +24,21 @@ public class Doctor {
     // MODIFIES: this
     // EFFECTS: Constructs a patient and adds them to the patient list of the
     //          Doctor
-    public void addPatient(String name, int age, int weight, int height) {
-        Patient p = new Patient(name, age, weight, height);
+    public void addPatient(Patient p) {
         this.patients.add(p);
     }
 
     // MODIFIES: this
     // EFFECTS: Removes the patient from the list by their name
-    public void removePatient(String name) {
+    public boolean removePatient(String name) {
         for (int i = 0; i < patients.size(); i++) {
             Patient p = patients.get(i);
             if (p.getName().equals(name)) {
                 patients.remove(i);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     // REQUIRES: patients.size > 0

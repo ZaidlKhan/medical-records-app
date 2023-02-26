@@ -3,18 +3,25 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PatientTest {
 
     private Patient testPatient;
+    private MedicalRecord testmr1;
+    private MedicalRecord testmr2;
 
     @BeforeEach
     void runBefore() {
+        String[] symptoms1 = {"cough", "joint pain", "sore throat"};
+        String[] prescriptions1 = {"Acenocoumarol", "Abiraterone acetate"};
+        String[] symptoms2 = {"cold", "chills", "fatigue"};
+        String[] prescriptions2 = {"Antihistamines"};
+        testmr1 = new MedicalRecord("2017-02-13", symptoms1, prescriptions1, "Patient is otherwise healthy");
+        testmr2 = new MedicalRecord("2018-09-19", symptoms2, prescriptions2, "Patient is otherwise healthy");
         testPatient = new Patient("Gregor", 45, 65, 180);
     }
+
 
     @Test
     void testConstructor() {
@@ -56,44 +63,36 @@ class PatientTest {
     @Test
     void testAddMedicalRecord() {
         assertEquals(testPatient.getMedicalRecord().size(), 0);
-        testPatient.addMedicalRecord(1995, 7, 4, "Patient has been sick for a week");
+        testPatient.addMedicalRecord(testmr1);
         assertEquals(testPatient.getMedicalRecord().size(), 1);
     }
 
     @Test
     void testAddMulipleMedicalRecords() {
         assertEquals(testPatient.getMedicalRecord().size(), 0);
-        testPatient.addMedicalRecord(1995, 7, 4, "Patient has been sick for a week");
-        testPatient.addMedicalRecord(2000, 9, 3, "Patient has never had this before");
+        testPatient.addMedicalRecord(testmr1);
+        testPatient.addMedicalRecord(testmr2);
         assertEquals(testPatient.getMedicalRecord().size(), 2);
     }
 
     @Test
-    void testFilterMedicalRecordbyYear() {
+    void testSearchMedicalRecord() {
         assertEquals(testPatient.getMedicalRecord().size(), 0);
-        testPatient.addMedicalRecord(1995, 7, 4, "Patient has been sick for a week");
-        testPatient.addMedicalRecord(2000, 9, 3, "Patient has never had this before");
-        testPatient.addMedicalRecord(2000, 12, 6, "Patient has had this before");
-        ArrayList<MedicalRecord> filterList = testPatient.filterMedicalRecordsYear(2000);
-        assertEquals(filterList.size(), 2);
+        testPatient.addMedicalRecord(testmr1);
+        testPatient.addMedicalRecord(testmr2);
+        assertEquals(testPatient.getMedicalRecord().size(), 2);
+        assertEquals(testPatient.searchMedicalRecord("2018-09-19"), testmr2);
     }
 
     @Test
-    void testFilterMedicalRecordEmpty() {
+    void testSearchMedicalRecordNotThere() {
         assertEquals(testPatient.getMedicalRecord().size(), 0);
-        ArrayList<MedicalRecord> filterList = testPatient.filterMedicalRecordsYear(1990);
-        assertEquals(filterList.size(), 0);
+        testPatient.addMedicalRecord(testmr1);
+        testPatient.addMedicalRecord(testmr2);
+        assertEquals(testPatient.getMedicalRecord().size(), 2);
+        assertNull(testPatient.searchMedicalRecord("2020-03-20"));
     }
 
-    @Test
-    void testFilterMedicalRecordNoneFound() {
-        assertEquals(testPatient.getMedicalRecord().size(), 0);
-        testPatient.addMedicalRecord(1995, 7, 4, "Patient has been sick for a week");
-        testPatient.addMedicalRecord(2000, 9, 3, "Patient has never had this before");
-        testPatient.addMedicalRecord(2000, 12, 6, "Patient has had this before");
-        ArrayList<MedicalRecord> filterList = testPatient.filterMedicalRecordsYear(2010);
-        assertEquals(filterList.size(), 0);
-    }
 
 
 }

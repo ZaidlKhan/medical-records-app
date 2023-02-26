@@ -21,26 +21,22 @@ public class Patient {
     // MODIFIES: this
     // EFFECTS: adds a new medical record to the list of
     //          medical records the patient already has
-    public void addMedicalRecord(int year, int month, int day, String doctorsNotes) {
-        ArrayList<String> emptyList = new ArrayList<>();
-        MedicalRecord mr = new MedicalRecord(year, month, day, doctorsNotes);
+    public void addMedicalRecord(MedicalRecord mr) {
         this.medicalRecords.add(mr);
     }
 
-    // REQUIRES: getMedicalRecord().size() > 0
-    // EFFECTS: Returns a list of medical records from a given year
-    //          If no medical records  are from the given year, then
-    //          return the empty list
-    public ArrayList<MedicalRecord> filterMedicalRecordsYear(int year) {
-        ArrayList<MedicalRecord> filterList = new ArrayList<MedicalRecord>();
-        for (int x = 0; x < this.getMedicalRecord().size(); x++) {
-            MedicalRecord mr = this.getMedicalRecord().get(x);
-            if (mr.getYear() == year) {
-                filterList.add(mr);
+    // REQUIRES: this.medicalRecords.size() > 0
+    // EFFECTS: returns the medical record with the given date
+    //          returns null if it is not found
+    public MedicalRecord searchMedicalRecord(String date) {
+        for (MedicalRecord mr : medicalRecords) {
+            if (mr.getDate().equals(date)) {
+                return mr;
             }
         }
-        return filterList;
+        return null;
     }
+
 
     // MODIFIES: this
     // EFFECTS: sets the name of the object

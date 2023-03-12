@@ -6,6 +6,7 @@ import model.MedicalRecord;
 import model.Patient;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import persistence.JsonWriter;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
 
@@ -79,10 +80,54 @@ class JsonReaderTest extends JsonTest {
         jsonArray.put("afternoon");
 
         String[] expectedArray = {"day", "night", "afternoon"};
-        String[] actualArray  = JsonReader.makeStringArray(jsonArray);
+        String[] actualArray = JsonReader.makeStringArray(jsonArray);
 
         assertArrayEquals(expectedArray, actualArray);
 
     }
+
+    @Test
+    void testReadFile() throws IOException {
+        try {
+            String source = "./data/testReaderEmptyMediRecords.json";
+            JSONObject expected = new JSONObject("{\"registeredDoctors\":[]}");
+            JsonReader jsonReader = new JsonReader(source);
+            String actualContent = jsonReader.readFile(source);
+            assertEquals(expected.toString(), actualContent);
+        } catch (IOException e) {
+            System.out.println("caught IO Expcetion");
+        }
+    }
+
+    public void addMedicalRecordJson(Patient p, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("medicalRecords");
+
+        for (Object json : jsonArray) {
+            JSONObject nextMedicalRecord = (JSONObject) json;
+            this.addMedicalRecord(p, nextMedicalRecord);
+        }
+    }
+
+    public void addMedicalRecord(Patient p, JSONObject jsonObject) {
+        String date = jsonObject.getString("date");
+        JSONArray symptoms = jsonObject.getJSONArray("symptoms");
+        String[] stringSymptoms = makeStringArray(symptoms);
+        JSONArray prescription = jsonObject.getJSONArray("prescriptions");
+        String[] stringPrecription = makeStringArray(prescription);
+        String doctorsNote = jsonObject.getString("doctorNotes");
+
+        MedicalRecord mr = new MedicalRecord(date, stringSymptoms,
+                stringPrecription, doctorsNote);
+        p.addMedicalRecord(mr);
+    }
+
+    public static String[] makeStringArray(JSONArray array) {
+        String[] stringArray = new String[array.length()];
+        for (int i = 0; i < array.length(); i++) {
+            stringArray[i] = array.getString(i);
+        }
+        return stringArray;
+    }
 }
+
 

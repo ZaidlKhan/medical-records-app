@@ -53,13 +53,13 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    private MediRecords parseMediRecord(JSONObject jsonObject) {
+    public MediRecords parseMediRecord(JSONObject jsonObject) {
         MediRecords mr = new MediRecords();
         this.addDoctors(mr, jsonObject);
         return mr;
     }
 
-    private void addDoctors(MediRecords mr, JSONObject jsonObject) {
+    public void addDoctors(MediRecords mr, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("registeredDoctors");
 
         for (Object json: jsonArray) {
@@ -68,7 +68,7 @@ public class JsonReader {
         }
     }
 
-    private void addDoctor(MediRecords mr, JSONObject jsonObject) {
+    public void addDoctor(MediRecords mr, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String password = jsonObject.getString("password");
         Doctor d = new Doctor(name, password);
@@ -77,7 +77,7 @@ public class JsonReader {
 
     }
 
-    private void addPatients(Doctor d, JSONObject jsonObject) {
+    public void addPatients(Doctor d, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("patients");
 
         for (Object json : jsonArray) {
@@ -86,7 +86,7 @@ public class JsonReader {
         }
     }
 
-    private void addPatient(Doctor d, JSONObject jsonObject) {
+    public void addPatient(Doctor d, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         int age = jsonObject.getInt("age");
         int weight = jsonObject.getInt("weight");
@@ -96,7 +96,7 @@ public class JsonReader {
         d.addPatient(patient);
     }
 
-    private void addMedicalRecordJson(Patient p, JSONObject jsonObject) {
+    public void addMedicalRecordJson(Patient p, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("medicalRecords");
 
         for (Object json: jsonArray) {
@@ -105,7 +105,7 @@ public class JsonReader {
         }
     }
 
-    private void addMedicalRecord(Patient p, JSONObject jsonObject) {
+    public void addMedicalRecord(Patient p, JSONObject jsonObject) {
         String date = jsonObject.getString("date");
         JSONArray symptoms = jsonObject.getJSONArray("symptoms");
         String[] stringSymptoms = makeStringArray(symptoms);
@@ -118,7 +118,7 @@ public class JsonReader {
         p.addMedicalRecord(mr);
     }
 
-    private String[] makeStringArray(JSONArray array) {
+    public static String[] makeStringArray(JSONArray array) {
         String[] stringArray = new String[array.length()];
         for (int i = 0; i < array.length(); i++) {
             stringArray[i] = array.getString(i);

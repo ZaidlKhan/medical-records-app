@@ -1,6 +1,11 @@
 package persistance;
 
+import java.util.*;
 import model.MediRecords;
+import model.MedicalRecord;
+import model.Patient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
 
@@ -45,4 +50,39 @@ class JsonReaderTest extends JsonTest {
             fail("Couldn't read from file");
         }
     }
+
+    @Test
+    void testAddMedicalRecordJson() {
+        Patient p = new Patient("john", 1, 1, 1);
+        String[] symptomsList = {"cold", "cough"};
+        String[] presciptionList = {"tylonol", "ibo"};
+        MedicalRecord testmr = new MedicalRecord("2023-02-13", symptomsList,
+                presciptionList, "Patient is ill");
+        p.addMedicalRecord(testmr);
+
+        JSONObject json1 = new JSONObject(testmr.toJson());
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(json1);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("medicalRecords", jsonArray);
+
+        assertEquals(1, p.getMedicalRecord().size());
+        assertEquals(testmr, p.getMedicalRecord().get(0));
+    }
+
+    @Test
+    void testMakeStringArray() {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put("day");
+        jsonArray.put("night");
+        jsonArray.put("afternoon");
+
+        String[] expectedArray = {"day", "night", "afternoon"};
+        String[] actualArray  = JsonReader.makeStringArray(jsonArray);
+
+        assertArrayEquals(expectedArray, actualArray);
+
+    }
 }
+

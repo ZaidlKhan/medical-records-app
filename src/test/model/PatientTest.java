@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -91,6 +93,38 @@ class PatientTest {
         testPatient.addMedicalRecord(testmr2);
         assertEquals(testPatient.getMedicalRecord().size(), 2);
         assertNull(testPatient.searchMedicalRecord("2020-03-20"));
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", "Gregor");
+        json.put("age", 45);
+        json.put("weight", 65);
+        json.put("height", 180);
+        json.put("medicalRecords", new JSONArray());
+
+        assertEquals(json.toString(), testPatient.toJson().toString());
+    }
+
+    @Test
+    void testMedicalRecordToJson() {
+        testPatient.addMedicalRecord(testmr1);
+
+        String[] symptoms = testmr1.getSymptoms();
+        String[] prescriptions = testmr1.getPrescriptions();;
+
+        JSONObject expectedRecords = new JSONObject();
+        expectedRecords.put("date", "2017-02-13");
+        expectedRecords.put("symptoms", symptoms);
+        expectedRecords.put("prescriptions", prescriptions);
+        expectedRecords.put("doctorNotes", "Patient is otherwise healthy");
+
+        JSONArray expectedArray = new JSONArray();
+        expectedArray.put(expectedRecords);
+
+        assertEquals(expectedArray.toString(), testPatient.medicalRecordToJson().toString());
+
     }
 
 

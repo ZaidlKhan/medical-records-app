@@ -84,7 +84,7 @@ public class Doctor implements Writable {
     }
 
     // EFFECTS: returns things in this mediRecordsapp as jsonArray
-    private JSONArray patientsToJson() {
+    JSONArray patientsToJson() {
         JSONArray jsonArray = new JSONArray();
 
         for (Patient p : this.patients) {

@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,20 @@ public class MedicalRecordTest {
         assertEquals(mr.getDoctorNotes(), "Patient has acute illness");
         assertEquals(mr.getPrescriptions().length, 2);
         assertEquals(mr.getSymptoms().length, 3);
+    }
+
+    @Test
+    void medicalRecordToJson() {
+        JSONObject expectedMedicalRecord = new JSONObject();
+        String[] symptomList = mr.getSymptoms();
+        String[] prescriptionList = mr.getPrescriptions();
+        expectedMedicalRecord.put("date", "2017-02-13");
+        expectedMedicalRecord.put("symptoms", symptomList);
+        expectedMedicalRecord.put("doctorNotes", "Patient has acute illness");
+        expectedMedicalRecord.put("prescriptions", prescriptionList);
+
+        JSONObject actualMr = mr.toJson();
+        assertEquals(expectedMedicalRecord.toString(), actualMr.toString());
     }
 
 }

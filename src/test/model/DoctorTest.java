@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import java.util.ArrayList;
 
 class DoctorTest {
 
@@ -17,7 +21,7 @@ class DoctorTest {
     void runBefore() {
         testPatient1 = new Patient("Walter White", 60, 70, 180);
         testPatient2 = new Patient("Jesse Pinkman", 25, 55, 175);
-        testDoctor = new Doctor("Gregor", "CPSC 110");
+        testDoctor = new Doctor("Gregor", "CPSC110");
     }
 
     @Test
@@ -90,6 +94,27 @@ class DoctorTest {
         testDoctor.addPatient(testPatient1);
         testDoctor.addPatient(testPatient2);
         assertNull(testDoctor.searchPatient("Rick"));
+    }
+
+    @Test
+    void testPatientsToJson() {
+        testDoctor.addPatient(testPatient1);
+        assertEquals(testDoctor.getPatients().size(), 1);
+
+        ArrayList<MedicalRecord> medicalRecordList = testPatient1.getMedicalRecord();
+
+        JSONObject expectedPatient = new JSONObject();
+        expectedPatient.put("name" , "Walter White");
+        expectedPatient.put("age", 60);
+        expectedPatient.put("weight", 70);
+        expectedPatient.put("height", 180);
+        expectedPatient.put("medicalRecords", medicalRecordList);
+
+        JSONArray expectedArray = new JSONArray();
+        expectedArray.put(expectedPatient);
+
+        assertEquals(expectedArray.toString(), testDoctor.patientsToJson().toString());
+
     }
 
 }

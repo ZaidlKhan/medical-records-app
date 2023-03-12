@@ -1,0 +1,12 @@
+{"registeredDoctors": [
+    {
+        "password": "cena",
+        "patients": [],
+        "name": "john"
+    },
+    {
+        "password": "lau",
+        "patients": [],
+        "name": "ryan"
+    }
+]}

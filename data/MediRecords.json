@@ -1,0 +1,23 @@
+{"registeredDoctors": [{
+    "password": "123456789",
+    "patients": [{
+        "medicalRecords": [{
+            "date": "2023-03-11",
+            "symptoms": [
+                "cold",
+                " cough",
+                " sore throat"
+            ],
+            "doctorNotes": "patient is overall healthy",
+            "prescriptions": [
+                "tylonol",
+                "advil"
+            ]
+        }],
+        "name": "example Patient",
+        "weight": 100,
+        "age": 30,
+        "height": 100
+    }],
+    "name": "example doctor"
+}]}

@@ -1,0 +1,34 @@
+{"registeredDoctors": [
+
+  {
+    "password": "khan",
+    "patients": [{
+      "medicalRecords": [],
+      "name": "l",
+      "weight": 3,
+      "age": 1,
+      "height": 2
+    }],
+    "name": "zaid"
+  },
+  {
+    "password": "12345",
+    "patients": [{
+      "medicalRecords": [],
+      "name": "john",
+      "weight": 60,
+      "age": 20,
+      "height": 100
+    }, {
+      "medicalRecords": [],
+      "name": "deer",
+      "weight": 6,
+      "age": 100,
+      "height": 20
+    }
+
+    ],
+    "name": "Steve"
+  }
+
+]}

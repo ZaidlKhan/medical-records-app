@@ -1,15 +1,22 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
-public class Doctor {
+// Represent a Doctor with a name, password and patients
+public class Doctor implements Writable {
 
     private String name;
+    private String password;
     private ArrayList<Patient> patients;
 
 
-    public Doctor(String name) {
+    public Doctor(String name, String password) {
         this.name = name;
+        this.password = password;
         this.patients = new ArrayList<Patient>();
     }
 
@@ -19,6 +26,21 @@ public class Doctor {
 
     public ArrayList<Patient> getPatients() {
         return this.patients;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: changes the password to the given password
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    // EFFECTS: return true if the password is correct
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
     }
 
     // MODIFIES: this
@@ -50,5 +72,25 @@ public class Doctor {
             }
         }
         return null;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", this.name);
+        json.put("password", this.password);
+        json.put("patients", this.patientsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this mediRecordsapp as jsonArray
+    private JSONArray patientsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Patient p : this.patients) {
+            jsonArray.put(p.toJson());
+        }
+
+        return jsonArray;
     }
 }

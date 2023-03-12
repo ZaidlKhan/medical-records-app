@@ -1,18 +1,30 @@
 package ui;
 
 import model.Doctor;
+import model.MediRecords;
 import model.MedicalRecord;
 import model.Patient;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
+// Represents the MediRecords Application
 public class MedicalRecordsApp {
 
     private Scanner scan;
-    private Doctor doctor;
+    private MediRecords mediRecords;
+    private JsonWriter mainJsonWriter;
+    private JsonReader mainJsonReader;
 
     // EFFECTS: runs the Medical Records application
     public MedicalRecordsApp() {
+
+        this.mainJsonWriter = new JsonWriter("./data/MediRecords.json");
+        this.mainJsonReader = new JsonReader("./data/MediRecords.json");
+
         runApp();
     }
 
@@ -22,40 +34,121 @@ public class MedicalRecordsApp {
 
         boolean keepGoing = true;
         scan = new Scanner(System.in);
-        doctor = new Doctor("x");
+        mediRecords = new MediRecords();
+
+        this.loadMediRecords();
 
         while (keepGoing) {
-
-            System.out.println("1. Add Patient");
-            System.out.println("2. Remove Patient");
-            System.out.println("3. View Patients");
-            System.out.println("4. Search Patients");
-            System.out.println("5. Exit");
+            System.out.println("Welcome to MediRecords");
+            System.out.println("1. Log in");
+            System.out.println("2. Sign Up");
+            System.out.println("3. Exit");
             System.out.print("Enter Your Choice: ");
             int choice = scan.nextInt();
-            if (choice == 5) {
-                System.out.println("Exiting Application");
+
+            if (choice == 3) {
                 keepGoing = false;
+                System.out.println("Exiting Application");
+                this.saveMediRecord();
+            } else {
+                processCommandMediRecords(choice);
             }
-            processCommandMain(choice);
         }
         System.out.println("Goodbye!");
     }
 
-    private void processCommandMain(int command) {
+    private void processCommandMediRecords(int command) {
         if (command == 1) {
-            addPatient();
+            login();
         } else if (command == 2) {
-            removePatient();
-        } else if (command == 3) {
-            viewPatient();
-        } else if (command == 4) {
-            searchPatient();
+            signup();
         }
     }
 
+    private void login() {
+        boolean pendingPassword = true;
+        System.out.print("Enter Your Name: ");
+        scan.nextLine();
+        String doctorName = scan.nextLine();
+        Doctor d = mediRecords.searchDoctor(doctorName);
+        if (mediRecords.getRegisteredDoctor().contains(d)) {
+            while (pendingPassword) {
+                System.out.print("Enter Your Password: ");
+                String pw = scan.nextLine();
 
-    private void addPatient() {
+                if (d.checkPassword(pw)) {
+                    pendingPassword = false;
+                    System.out.println("Load Previous Patients? [Y/N]: ");
+                    String choice = scan.nextLine();
+                    loadOption(choice, d);
+                } else {
+                    System.out.println("Incorrect Password!");
+                }
+            }
+        } else {
+            System.out.println("Doctor Not Found\n");
+        }
+    }
+
+    private void signup() {
+        System.out.print("Enter Your Name: ");
+        scan.nextLine();
+        String doctorName = scan.nextLine();
+
+        System.out.print("Enter Your Password: ");
+        String pw = scan.nextLine();
+
+        Doctor d = new Doctor(doctorName, pw);
+        mediRecords.addDoctor(d);
+
+        mainMenu(d);
+    }
+
+    private void loadOption(String option, Doctor d) {
+        if (option.equals("Y")) {
+            mainMenu(d);
+        } else if (option.equals("N")) {
+            mediRecords.getRegisteredDoctor().remove(d);
+            d = new Doctor(d.getName(), d.getPassword());
+            mainMenu(d);
+            mediRecords.addDoctor(d);
+        }
+    }
+
+    private void mainMenu(Doctor d) {
+
+        boolean keepGoing = true;
+        while (keepGoing) {
+            System.out.println("\nWelcome Dr. " + d.getName() + "!");
+            System.out.println("1. Add Patient");
+            System.out.println("2. Remove Patient");
+            System.out.println("3. View Patients");
+            System.out.println("4. Search Patients");
+            System.out.println("5. Log out");
+            System.out.print("Enter Your Choice: ");
+            int choice = scan.nextInt();
+            if (choice == 5) {
+                keepGoing = false;
+                System.out.println("Logging out... \n");
+            }
+            processCommandMain(choice, d);
+        }
+
+    }
+
+    private void processCommandMain(int command, Doctor d) {
+        if (command == 1) {
+            addPatient(d);
+        } else if (command == 2) {
+            removePatient(d);
+        } else if (command == 3) {
+            viewPatient(d);
+        } else if (command == 4) {
+            searchPatient(d);
+        }
+    }
+
+    private void addPatient(Doctor d) {
 
         System.out.print("Enter Patient Name: ");
         scan.nextLine();
@@ -80,15 +173,19 @@ public class MedicalRecordsApp {
             p.addMedicalRecord(mr);
         }
 
-        System.out.println("Patient has been successfully added!\n");
-        doctor.addPatient(p);
+        System.out.println("Save Patient to file? [Y/N]");
+        String saveChoice = scan.next();
+
+        if (saveChoice.equals("Y")) {
+            d.addPatient(p);
+        }
     }
 
-    private void removePatient() {
+    private void removePatient(Doctor d) {
         System.out.print("Enter Patient Name: ");
         scan.nextLine();
         String name = scan.nextLine();
-        if (doctor.removePatient(name)) {
+        if (d.removePatient(name)) {
             System.out.println("Patient " + name + " has been successfully removed!");
             System.out.println("\n");
         } else {
@@ -97,14 +194,14 @@ public class MedicalRecordsApp {
         }
     }
 
-    private void viewPatient() {
-        if (doctor.getPatients().size() == 0) {
+    private void viewPatient(Doctor d) {
+        if (d.getPatients().size() == 0) {
             System.out.println("No Patients In Directory");
         }
-        if (doctor.getPatients().size() != 0) {
+        if (d.getPatients().size() != 0) {
             System.out.println("Patients: ");
-            for (int i = 0; i < doctor.getPatients().size(); i++) {
-                System.out.println(doctor.getPatients().get(i).getName());
+            for (int i = 0; i < d.getPatients().size(); i++) {
+                System.out.println(d.getPatients().get(i).getName());
             }
         }
 
@@ -133,12 +230,12 @@ public class MedicalRecordsApp {
         return mr;
     }
 
-    private void searchPatient() {
+    private void searchPatient(Doctor d) {
         System.out.print("Enter Patient Name: ");
         scan.nextLine();
         String name = scan.nextLine();
-        Patient p = doctor.searchPatient(name);
-        if (doctor.getPatients().contains(p)) {
+        Patient p = d.searchPatient(name);
+        if (d.getPatients().contains(p)) {
             System.out.println("\n");
             printPatientDetails(p);
 
@@ -154,7 +251,7 @@ public class MedicalRecordsApp {
             }
         }
 
-        if (!doctor.getPatients().contains(p)) {
+        if (!d.getPatients().contains(p)) {
             System.out.println("Patient could not be found \n");
         }
     }
@@ -261,6 +358,26 @@ public class MedicalRecordsApp {
             scan.next();
         }
     }
+
+    private void saveMediRecord() {
+        try {
+            this.mainJsonWriter.open();
+            this.mainJsonWriter.write(this.mediRecords);
+            this.mainJsonWriter.close();
+        } catch (FileNotFoundException var2) {
+            System.out.println("Unable to save file!");
+        }
+    }
+
+    private void loadMediRecords() {
+        try {
+            this.mediRecords = this.mainJsonReader.read();
+        } catch (IOException var2) {
+            System.out.println("Unable to read from file: ./data/Medirecords.json");
+        }
+    }
 }
+
+
 
 

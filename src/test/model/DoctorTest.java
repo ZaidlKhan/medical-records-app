@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.ArrayList;
 
 class DoctorTest {
@@ -16,15 +17,27 @@ class DoctorTest {
     void runBefore() {
         testPatient1 = new Patient("Walter White", 60, 70, 180);
         testPatient2 = new Patient("Jesse Pinkman", 25, 55, 175);
-        testDoctor = new Doctor("Gregor");
+        testDoctor = new Doctor("Gregor", "CPSC 110");
     }
 
     @Test
     void testConstructor() {
         assertEquals(testDoctor.getName(), "Gregor");
         assertEquals(testDoctor.getPatients().size(), 0);
+        assertEquals(testDoctor.getPassword(), "CPSC110");
     }
 
+    @Test
+    void testSetPasswordTrue() {
+        testDoctor.setPassword("CPSC");
+        assertTrue(testDoctor.checkPassword("CPSC"));
+    }
+
+    @Test
+    void testSetPasswordFalse() {
+        testDoctor.setPassword("CPSC");
+        assertFalse(testDoctor.checkPassword("NotCPSC"));
+    }
     @Test
     void testAddPatient() {
         assertEquals(testDoctor.getPatients().size(), 0);

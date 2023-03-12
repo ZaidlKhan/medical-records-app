@@ -1,8 +1,11 @@
 package model;
 
-import java.util.ArrayList;
+import org.json.JSONObject;
+import persistence.Writable;
 
-public class MedicalRecord {
+// Represents a Medical record with the currentDate, a list of symptoms,
+// a list of prescriptions, and a doctorsnote
+public class MedicalRecord implements Writable {
 
     private final String date;                             // day medical record was created
     private final String[] symptoms;                       // symptoms of patient
@@ -32,5 +35,14 @@ public class MedicalRecord {
         return this.doctorNotes;
     }
 
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("date", this.date);
+        json.put("prescriptions", this.prescriptions);
+        json.put("symptoms", this.symptoms);
+        json.put("doctorNotes", this.doctorNotes);
+        return json;
+    }
 
 }

@@ -1,8 +1,14 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
-public class Patient {
+// Represents a patient with their name, age, weight, height and list of
+// medical Records
+public class Patient implements Writable {
 
     private String name;                                      // name of patient
     private int age;                                          // age of patient in years
@@ -83,4 +89,24 @@ public class Patient {
         return this.medicalRecords;
     }
 
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", this.name);
+        json.put("age", this.age);
+        json.put("weight", this.weight);
+        json.put("height", this.height);
+        json.put("medicalRecords", medicalRecordToJson());
+        return json;
+    }
+
+    public JSONArray medicalRecordToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (MedicalRecord mr : medicalRecords) {
+            jsonArray.put(mr.toJson());
+        }
+
+        return jsonArray;
+
+    }
 }

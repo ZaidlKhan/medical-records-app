@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import model.MediRecords;
 import org.json.JSONObject;
 
+// Represents a json writer
 public class JsonWriter {
     private PrintWriter writer;
     private String destination;

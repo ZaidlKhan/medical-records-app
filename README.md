@@ -33,5 +33,5 @@ What a potential user will gain from this app:
 - As a user, I would like to add doctors notes and diagnoses to patient files
 - As a user, I would like to view and search through a list of all my patients by their name
 - As a user, I would like to be able to save my patients and their data to a file
-- As a user, I want to have the option to load my previous patients
+- As a user, I want to have the option to load my previous patients when I login 
 - As a user, I want to have the option to save patient data to file

@@ -1,17 +1,15 @@
 package persistance;
 
-import java.util.*;
 import model.MediRecords;
 import model.MedicalRecord;
 import model.Patient;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import persistence.JsonWriter;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
 
+import java.io.File;
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonReaderTest extends JsonTest {
@@ -55,21 +53,27 @@ class JsonReaderTest extends JsonTest {
     @Test
     void testAddMedicalRecordJson() {
         Patient p = new Patient("john", 1, 1, 1);
-        String[] symptomsList = {"cold", "cough"};
-        String[] presciptionList = {"tylonol", "ibo"};
-        MedicalRecord testmr = new MedicalRecord("2023-02-13", symptomsList,
-                presciptionList, "Patient is ill");
-        p.addMedicalRecord(testmr);
+        String[] symptomsList1 = {"cold", "cough"};
+        String[] presciptionList1 = {"tylonol", "ibo"};
+        MedicalRecord testmr1 = new MedicalRecord("2023-02-13", symptomsList1,
+                presciptionList1, "Patient is ill");
+        String[] symptomlist2 = {"dizzy"};
+        String[] presciptionList2 = {"tylonol", "ibo"};
+        MedicalRecord testmr2 = new MedicalRecord("2020-04-18", symptomlist2,
+                presciptionList2, "not feeling well");
+        p.addMedicalRecord(testmr2);
+        p.addMedicalRecord(testmr1);
 
-        JSONObject json1 = new JSONObject(testmr.toJson());
+        JSONObject json1 = new JSONObject(testmr1.toJson());
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(json1);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("medicalRecords", jsonArray);
 
-        assertEquals(1, p.getMedicalRecord().size());
-        assertEquals(testmr, p.getMedicalRecord().get(0));
+        assertEquals(2, p.getMedicalRecord().size());
+        assertEquals(testmr1, p.getMedicalRecord().get(1));
+        assertEquals(testmr2, p.getMedicalRecord().get(0));
     }
 
     @Test
@@ -99,35 +103,21 @@ class JsonReaderTest extends JsonTest {
         }
     }
 
-    public void addMedicalRecordJson(Patient p, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("medicalRecords");
+    @Test
+    void testReadFileHandlesException() throws IOException {
+        JsonReader reader = new JsonReader(".data/testReaderEmptyMediRecords.json");
+        File tempFile = File.createTempFile("testTempFile", ".json");
 
-        for (Object json : jsonArray) {
-            JSONObject nextMedicalRecord = (JSONObject) json;
-            this.addMedicalRecord(p, nextMedicalRecord);
+        tempFile.delete();
+
+        try {
+            String result = reader.readFile(tempFile.getPath());
+            fail("Throw an IOException to be thrown");
+        } catch (IOException e) {
+            // pass
         }
     }
 
-    public void addMedicalRecord(Patient p, JSONObject jsonObject) {
-        String date = jsonObject.getString("date");
-        JSONArray symptoms = jsonObject.getJSONArray("symptoms");
-        String[] stringSymptoms = makeStringArray(symptoms);
-        JSONArray prescription = jsonObject.getJSONArray("prescriptions");
-        String[] stringPrecription = makeStringArray(prescription);
-        String doctorsNote = jsonObject.getString("doctorNotes");
-
-        MedicalRecord mr = new MedicalRecord(date, stringSymptoms,
-                stringPrecription, doctorsNote);
-        p.addMedicalRecord(mr);
-    }
-
-    public static String[] makeStringArray(JSONArray array) {
-        String[] stringArray = new String[array.length()];
-        for (int i = 0; i < array.length(); i++) {
-            stringArray[i] = array.getString(i);
-        }
-        return stringArray;
-    }
 }
 
 

@@ -7,7 +7,6 @@ import model.MediRecords;
 import org.json.JSONObject;
 
 public class JsonWriter {
-    private static final int TAB = 4;
     private PrintWriter writer;
     private String destination;
 

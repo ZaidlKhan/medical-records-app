@@ -47,9 +47,7 @@ public class JsonReader {
             }
             throw var7;
         }
-        if (stream != null) {
-            stream.close();
-        }
+        stream.close();
         return contentBuilder.toString();
     }
 
@@ -109,12 +107,12 @@ public class JsonReader {
         String date = jsonObject.getString("date");
         JSONArray symptoms = jsonObject.getJSONArray("symptoms");
         String[] stringSymptoms = makeStringArray(symptoms);
-        JSONArray prescription = jsonObject.getJSONArray("prescriptions");
-        String[] stringPrecription = makeStringArray(prescription);
+        JSONArray prescriptions = jsonObject.getJSONArray("prescriptions");
+        String[] stringPrescriptions = makeStringArray(prescriptions);
         String doctorsNote = jsonObject.getString("doctorNotes");
 
         MedicalRecord mr = new MedicalRecord(date, stringSymptoms,
-                stringPrecription, doctorsNote);
+                stringPrescriptions, doctorsNote);
         p.addMedicalRecord(mr);
     }
 

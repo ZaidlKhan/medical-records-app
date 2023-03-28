@@ -1,7 +1,13 @@
 package ui;
 
-public class Main {
+import model.MediRecords;
+
+import javax.swing.*;
+
+
+public class Main extends JFrame {
     public static void main(String[] args) {
-        new MedicalRecordsApp();
+        MediRecords mr = new MediRecords();
+        new LoginScreenUI();
     }
 }

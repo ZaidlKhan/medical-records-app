@@ -38,6 +38,12 @@ public class Doctor implements Writable {
         this.password = newPassword;
     }
 
+    //MODIFIES: this
+    //EFFECTS: changes the name of the doctor
+    public void setName(String newName) {
+        this.name = newName;
+    }
+
     // EFFECTS: return true if the password is correct
     public boolean checkPassword(String password) {
         return this.password.equals(password);

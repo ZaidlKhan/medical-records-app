@@ -1,23 +1,73 @@
 {"registeredDoctors": [{
-    "password": "123456789",
+    "password": "12345",
     "patients": [{
-        "medicalRecords": [{
-            "date": "2023-03-11",
-            "symptoms": [
-                "cold",
-                " cough",
-                " sore throat"
-            ],
-            "doctorNotes": "patient is overall healthy",
-            "prescriptions": [
-                "tylonol",
-                "advil"
-            ]
-        }],
-        "name": "example Patient",
+        "medicalRecords": [
+            {
+                "date": "2023-03-25",
+                "symptoms": [
+                    "cold",
+                    " cough"
+                ],
+                "doctorNotes": "none",
+                "prescriptions": ["none"]
+            },
+            {
+                "date": "2023-03-27",
+                "symptoms": ["da\tda"],
+                "doctorNotes": "l,l,l",
+                "prescriptions": [
+                    "m",
+                    "m",
+                    "m"
+                ]
+            },
+            {
+                "date": "2023-03-27",
+                "symptoms": [
+                    "l",
+                    "l",
+                    "l\t"
+                ],
+                "doctorNotes": "l,l,l",
+                "prescriptions": [
+                    "l",
+                    "l",
+                    "l"
+                ]
+            },
+            {
+                "date": "2023-03-27",
+                "symptoms": [
+                    "l",
+                    "l",
+                    "l"
+                ],
+                "doctorNotes": "l,l,l",
+                "prescriptions": [
+                    "l",
+                    "l",
+                    "l"
+                ]
+            },
+            {
+                "date": "2023-03-27",
+                "symptoms": [
+                    "l",
+                    "l",
+                    "l"
+                ],
+                "doctorNotes": "l,lll",
+                "prescriptions": [
+                    "l",
+                    "l",
+                    "l"
+                ]
+            }
+        ],
+        "name": "dr david",
         "weight": 100,
-        "age": 30,
-        "height": 100
+        "age": 1212,
+        "height": 1221
     }],
-    "name": "example doctor"
+    "name": "dave"
 }]}

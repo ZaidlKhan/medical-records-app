@@ -7,6 +7,7 @@ import model.Patient;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -16,8 +17,8 @@ public class MedicalRecordsApp {
 
     private Scanner scan;
     private MediRecords mediRecords;
-    private JsonWriter mainJsonWriter;
-    private JsonReader mainJsonReader;
+    private final JsonWriter mainJsonWriter;
+    private final JsonReader mainJsonReader;
 
     // EFFECTS: runs the Medical Records application
     public MedicalRecordsApp() {

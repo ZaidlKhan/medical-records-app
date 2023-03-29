@@ -60,6 +60,7 @@ public class LoginScreenUI extends JFrame {
         setVisible(true);
     }
 
+    // EFFECTS: a login Button that when Pressed sends the user to the loginUI
     public JButton loginButton() {
         JButton loginButton = new JButton("Login");
         loginButton.setPreferredSize(new Dimension(150, 50));
@@ -70,6 +71,7 @@ public class LoginScreenUI extends JFrame {
         return loginButton;
     }
 
+    // EFFECTS: a login Button that when Pressed sends the user to the SignupUI
     public JButton signupButton() {
         JButton signupButton = new JButton("Signup");
         signupButton.setPreferredSize(new Dimension(150, 50));
@@ -80,6 +82,8 @@ public class LoginScreenUI extends JFrame {
         return signupButton;
     }
 
+    // MODIFIES: mr
+    // EFFECTS: loads the previously saved mediRecords from the JSON file
     private MediRecords loadMediRecords() {
         try {
             this.mr = this.mainJsonReader.read();

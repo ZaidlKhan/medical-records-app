@@ -659,23 +659,9 @@ public class MainMenuUI extends JFrame {
 
     // EFFECTS: text fields for the add medical records window that allow the user to enter data to create a new
     //          medical record
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void textBoxPaneMR() {
         JLabel date =  new JLabel(String.valueOf(java.time.LocalDate.now()));
-        symptomField = new JTextArea();
-        prescriptionField = new JTextArea();
-        doctorsNoteField = new JTextArea();
-
-        symptomField.setPreferredSize(new Dimension(300, 75));
-        prescriptionField.setPreferredSize(new Dimension(300, 75));
-        doctorsNoteField.setPreferredSize(new Dimension(300, 75));
-
-        doctorsNoteField.setLineWrap(true);
-        doctorsNoteField.setWrapStyleWord(true);
-        prescriptionField.setLineWrap(true);
-        prescriptionField.setWrapStyleWord(true);
-        doctorsNoteField.setLineWrap(true);
-        doctorsNoteField.setWrapStyleWord(true);
+        textAreas();
 
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -699,6 +685,24 @@ public class MainMenuUI extends JFrame {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         medicalRecordWindow.add(doctorsNoteField, gridBagConstraints);
+    }
+
+    // EFFECTS: creates text areas and sets their dimensions
+    private void textAreas() {
+        symptomField = new JTextArea();
+        prescriptionField = new JTextArea();
+        doctorsNoteField = new JTextArea();
+
+        symptomField.setPreferredSize(new Dimension(300, 75));
+        prescriptionField.setPreferredSize(new Dimension(300, 75));
+        doctorsNoteField.setPreferredSize(new Dimension(300, 75));
+
+        doctorsNoteField.setLineWrap(true);
+        doctorsNoteField.setWrapStyleWord(true);
+        prescriptionField.setLineWrap(true);
+        prescriptionField.setWrapStyleWord(true);
+        doctorsNoteField.setLineWrap(true);
+        doctorsNoteField.setWrapStyleWord(true);
     }
 
     // EFFECTS: makes a new medical record based on what is entered into the text fields in the add medical record

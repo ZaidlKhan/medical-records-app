@@ -8,6 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * This class represents the starting user interface that opens when the application is first opened. It prompts the
+ * user with a login and signup button that allows the user to login or signup. This class also loads the
+ * mediRecords from the JSON file. Once either the login or signup button is pressed, this window is closed
+ **/
 public class LoginScreenUI extends JFrame {
 
     private MediRecords mr;

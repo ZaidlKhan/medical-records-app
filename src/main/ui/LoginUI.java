@@ -5,18 +5,19 @@ import javax.swing.*;
 import java.awt.*;
 import model.*;
 import persistence.JsonReader;
-import persistence.JsonWriter;
 import java.io.IOException;
 
-// User interface the allows users to login with their name and password
+/**
+ * The LoginUI class is a JFrame that represents the login user interface for the MediRecords application. The class
+ * allows the user to log in and access their account. once the user is logged in, they are prompted to load previous
+ * patients. Once the user chooses if they want to load previous patients, the main menu screen is opened with the
+ * Doctors Patients and Data
+ **/
 public class LoginUI extends JFrame {
-
-    private GridBagConstraints gridBagConstraints;
 
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JsonReader mainJsonReader;
-    private JPanel userPanel;
+    private final JsonReader mainJsonReader;
 
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public LoginUI(MediRecords mr) {
@@ -27,9 +28,9 @@ public class LoginUI extends JFrame {
         setSize(400, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        userPanel = new JPanel(new GridBagLayout());
+        JPanel userPanel = new JPanel(new GridBagLayout());
 
-        gridBagConstraints = new GridBagConstraints();
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill =  GridBagConstraints.HORIZONTAL;
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -57,7 +58,7 @@ public class LoginUI extends JFrame {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new Insets(5, 0,0,0);
-        userPanel.add(returnButton(mr), gridBagConstraints);
+        userPanel.add(returnButton(), gridBagConstraints);
 
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridx = 0;
@@ -118,7 +119,7 @@ public class LoginUI extends JFrame {
     }
 
     // EFFECTS: Return button, once clicked returns the user to the login screen
-    public JButton returnButton(MediRecords mr) {
+    public JButton returnButton() {
         JButton returnButton = new JButton("Return");
         returnButton.setPreferredSize(new Dimension(100, 30));
         returnButton.addActionListener(e -> {

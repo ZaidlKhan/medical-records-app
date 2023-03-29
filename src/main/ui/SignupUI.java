@@ -4,6 +4,11 @@ import model.*;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The SignupUI class is a JFrame that represents the user interface for the doctor registration process.
+ * Once the doctor has entered their username and password and click the signup button, the main menu screen opens,
+ * and the doctor is added to the mediRecords
+ **/
 public class SignupUI extends JFrame {
 
     private GridBagConstraints gridBagConstraints;
@@ -40,8 +45,13 @@ public class SignupUI extends JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.insets = new Insets(40, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(65, 0,1,0);
         userPanel.add(signupButton(mr), gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        userPanel.add(returnButton(), gridBagConstraints);
 
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridx = 0;
@@ -55,6 +65,7 @@ public class SignupUI extends JFrame {
         setVisible(true);
     }
 
+    // EFFECTS: creates a JLabel that says "Name" on it
     public JLabel usernameLabel() {
         JLabel usernameLabel = new JLabel();
         usernameLabel.setPreferredSize(new Dimension(90, 40));
@@ -64,30 +75,34 @@ public class SignupUI extends JFrame {
         return usernameLabel;
     }
 
+    // EFFECTS: creates a TextField that allows the user to enter their name to sign up
     public JTextField username() {
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(130, 30));
         return usernameField;
     }
 
+    // EFFECTS: creates a J Label that says "Password" on it
     public JLabel passwordLabel() {
         JLabel passwordLabel = new JLabel();
         passwordLabel.setPreferredSize(new Dimension(90, 40));
         passwordLabel.setText("Password:");
         passwordLabel.setForeground(Color.white);
-        passwordLabel.setSize(new Dimension(100, 40));
         return passwordLabel;
     }
 
+    // EFFECTS: creates a password Field that allows the user to enter a password and signup
     public JPasswordField password() {
         passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(130, 30));
         return passwordField;
     }
 
+    // MODIFIES: this, mediRecords
+    // EFFECTS: creates a sign in button that when pressed, constructs a new doctor with the given name an password, and
+    //          adds the doctor to the mediRecords app
     public JButton signupButton(MediRecords mediRecords) {
         JButton signupButton = new JButton("Sign Up");
-        signupButton.setPreferredSize(new Dimension(100, 30));
         signupButton.addActionListener(e -> {
             Doctor d = new Doctor(getUsername(), getPassword());
             mediRecords.addDoctor(d);
@@ -96,6 +111,16 @@ public class SignupUI extends JFrame {
         return signupButton;
     }
 
+    // EFFECTS: A button that when pressed, returns the user to the start up screen
+    public JButton returnButton() {
+        JButton signupButton = new JButton("Return");
+        signupButton.addActionListener(e -> {
+            new LoginScreenUI();
+        });
+        return signupButton;
+    }
+
+    // EFFECTS: creates a JLabel wih the logo on it
     public JLabel imageLabel() {
         ImageIcon imageIcon = new ImageIcon("data/image.png");
         JLabel imageLabel = new JLabel();
@@ -104,10 +129,12 @@ public class SignupUI extends JFrame {
         return imageLabel;
     }
 
+    // EFFECTS: returns the text for the name field that the doctor has entered
     public String getUsername() {
         return usernameField.getText();
     }
 
+    // EFFECTS: returns the text for the password field that the doctor has entered
     public String getPassword() {
         return new String(passwordField.getPassword());
     }

@@ -13,10 +13,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * This class represents the mainMenu for this application
+ **/
 public class MainMenuUI extends JFrame {
 
     private JList<String> patientList;
-    private JButton addPatientButton;
     private DefaultListModel<String> patientListModel;
     private JPanel patientDataPanel;
     private GridBagConstraints gridBagConstraints;
@@ -30,12 +32,12 @@ public class MainMenuUI extends JFrame {
     private JTextArea symptomField;
     private JTextArea prescriptionField;
     private JTextArea doctorsNoteField;
-    private Color lightColor;
-    private JLabel nameLabel;
+    private final Color lightColor;
     private JLabel text;
     private JPanel infoPanel;
-    private JPanel basePanel;
+    private final JLabel logo;
 
+    // General Layout used: https://www.javatpoint.com/java-gridbaglayout
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public MainMenuUI(MediRecords mr, Doctor d) {
 
@@ -49,7 +51,7 @@ public class MainMenuUI extends JFrame {
         doctor = d;
 
         ImageIcon logoIcon = new ImageIcon("data/image3.png");
-        JLabel logo = new JLabel(new ImageIcon(logoIcon.getImage().getScaledInstance(300, -1,
+        logo = new JLabel(new ImageIcon(logoIcon.getImage().getScaledInstance(300, -1,
                 Image.SCALE_SMOOTH)));
 
         setLayout(new BorderLayout());
@@ -57,7 +59,6 @@ public class MainMenuUI extends JFrame {
         JPanel leftPanel = leftPanel(mr);
         add(leftPanel, BorderLayout.WEST);
         add(dashboardPanel(doctor), BorderLayout.NORTH);
-
         add(logo, BorderLayout.CENTER);
 
         setSize(800, 600);
@@ -66,6 +67,8 @@ public class MainMenuUI extends JFrame {
 
         loadPatients(doctor);
 
+        // Scrollbar Listener:
+        // http://www.java2s.com/Tutorial/Java/0240__Swing/ListeningtoJListEventswithaListSelectionListener.htm
         patientList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -83,6 +86,9 @@ public class MainMenuUI extends JFrame {
         });
     }
 
+    // MODIFIES: this
+    // EFFECTS: shows labels for patient data along with text boxes so that doctor can add a new Patient
+    //          with what is entered into the textboxes
     public void showPatientDataPanel(Doctor d) {
         if (patientDataPanel != null) {
             remove(patientDataPanel);
@@ -92,7 +98,7 @@ public class MainMenuUI extends JFrame {
         patientDataPanel.setLayout(new GridBagLayout());
         gridBagConstraints = new GridBagConstraints();
 
-        String[] labels = {"Name: ", "Age: ", "Weight: ", "Height: "};
+        String[] labels = {"Name: ", "Age: ", "Weight (kg): ", "Height (cm): "};
         for (int i = 0; i < 4; i++) {
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = i;
@@ -111,14 +117,21 @@ public class MainMenuUI extends JFrame {
         repaint();
     }
 
+    // MODIFIES: this, d
+    // EFFECTS: add button that when pressed, will allow the user to add a new Patient, once a all the data of a new
+    //          entered and the save button is clicked, the user will be asked to save the patient to file, If yes,
+    //          then the Patient will be save to the JSON file, if no then the patient will not be constructed
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public JButton addButton(Doctor d) {
         JButton saveButton = new JButton("Add Patient");
         saveButton.addActionListener(new ActionListener() {
+            // Option Pane: https://www.javatpoint.com/java-joptionpane
             @Override
             public void actionPerformed(ActionEvent e) {
                 Patient p = makePatient();
                 int option = JOptionPane.showConfirmDialog(MainMenuUI.this,
-                        "Would you like to save this patient to file?", "Save Patients",
+                        "Confirm patient addition: This will add " + p.getName() + " to your patient list.",
+                        "Add Patient",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
 
@@ -132,7 +145,7 @@ public class MainMenuUI extends JFrame {
                     sucessfullyAdded();
                 } else {
                     JOptionPane.showMessageDialog(MainMenuUI.this,
-                            "Patient Not Saved To File", "Not Saved",
+                            "Patient Not Added to Records", "Not Added",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -140,6 +153,7 @@ public class MainMenuUI extends JFrame {
         return saveButton;
     }
 
+    // EFFECTS: texts boxes for the name, age, weight, height fields where the doctor will enter the patient data
     public void textBoxPane() {
         nameField = new JTextField(20);
         ageField = new JTextField(20);
@@ -167,6 +181,8 @@ public class MainMenuUI extends JFrame {
         patientDataPanel.add(heightField, gridBagConstraints);
     }
 
+    // REQUIRES: nameField = String, ageField = int, weightField = int, heightField = int
+    // EFFECTS: creates a new Patient with the data the doctor has entered
     public Patient makePatient() {
         String name = nameField.getText();
         int age = Integer.parseInt(ageField.getText());
@@ -176,6 +192,7 @@ public class MainMenuUI extends JFrame {
         return new Patient(name, age, weight, height);
     }
 
+    //EFFECTS: Top panel of the application with the Doctors name, and the logo on the right side
     public JPanel dashboardPanel(Doctor d) {
         JPanel dashboard = new JPanel(new BorderLayout());
         text = new JLabel("Dr " + d.getName() + "'s Dashboard");
@@ -194,19 +211,40 @@ public class MainMenuUI extends JFrame {
         return dashboard;
     }
 
+    // EFFECTS: Logout Button, that once clicked will save the current state of the application and prompt the user
+    //          back to the login Screen
     public JButton logoutButton(MediRecords mr) {
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                saveDoctorOptions(mr);
                 MainMenuUI.this.dispose();
-                saveMediRecord(mr);
                 new LoginScreenUI();
             }
         });
         return logoutButton;
     }
 
+    // MODIFIES: mainJsonWriter
+    // EFFECTS: Prompts the user to save the state of the application the the JSON file.
+    public void saveDoctorOptions(MediRecords mr) {
+        int option = JOptionPane.showConfirmDialog(MainMenuUI.this,
+                "Would you like to save your progress before logging out?", "Save Patients",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (option == JOptionPane.YES_OPTION) {
+            saveMediRecord(mr);
+            MainMenuUI.this.dispose();
+            new LoginScreenUI();
+        } else {
+            MainMenuUI.this.dispose();
+            new LoginScreenUI();
+        }
+    }
+
+    // EFFECTS: a settings button that will allow the user to change their name or password
     public JButton settingsButton() {
         JButton settings = new JButton("Settings");
         settings.addActionListener(new ActionListener() {
@@ -218,17 +256,23 @@ public class MainMenuUI extends JFrame {
         return settings;
     }
 
+    // EFFECTS: A button that once clicked, shows the panel to enter new patient data to construct a new Patient
     public JButton addPatientButton(Doctor d) {
-        addPatientButton = new JButton("Add Patient");
+        JButton addPatientButton = new JButton("Add Patient");
         addPatientButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showPatientDataPanel(d);
+                remove(logo);
             }
         });
         return addPatientButton;
     }
 
+    // EFFECTS: This method creates and returns a JPanel containing a list of patients, "Add Patient" and "Search"
+    //          buttons, a JScrollPane for the patient list, and "Settings" and "Logout" buttons in the bottom panel.
+    //          This will represent the left side of the application
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public JPanel leftPanel(MediRecords mr) {
         patientListModel = new DefaultListModel<>();
         patientList = new JList<>(patientListModel);
@@ -271,6 +315,8 @@ public class MainMenuUI extends JFrame {
         return leftPanel;
     }
 
+    // MODIFIES: mainJsonWriter
+    // EFFECTS: saves the current state of the application to JSON
     private void saveMediRecord(MediRecords mediRecords) {
         try {
             this.mainJsonWriter.open();
@@ -281,6 +327,9 @@ public class MainMenuUI extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the patients Details (name, age, weight, height, medical history) on the right side of the
+    //          window
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void displayPatientDetails(Patient p) {
         if (patientDataPanel != null) {
@@ -292,7 +341,7 @@ public class MainMenuUI extends JFrame {
         infoPanel.setPreferredSize(new Dimension(425, 2000));
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
-        nameLabel = new JLabel("Patient: " + p.getName());
+        JLabel nameLabel = new JLabel("Patient: " + p.getName());
         nameLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         nameLabel.setBorder(new EmptyBorder(10, 0, 2, 0));
@@ -325,6 +374,9 @@ public class MainMenuUI extends JFrame {
         repaint();
     }
 
+    // EFFECTS: Button Panel on the display Patient details window that has 3 buttons, remove Patient which removes the
+    //          given Patient, change Patient which allows the use to change patient details, and add new medical record
+    //          which allows the user to add a new medical Record to this Patient
     public JPanel buttonPanel(Patient p) {
         JPanel buttonPanel = new JPanel();
         JPanel panel = new JPanel(new BorderLayout());
@@ -334,7 +386,7 @@ public class MainMenuUI extends JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        buttonPanel.add(removePatientButton(doctor), gridBagConstraints);
+        buttonPanel.add(removePatientButton(), gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -350,12 +402,17 @@ public class MainMenuUI extends JFrame {
         return panel;
     }
 
+    // MODIFIES: patient List Model
+    // EFFECTS: loads the given doctors patients into the patient list model that is displayed in the scoll pane on
+    //          left side of the screen
     public void loadPatients(Doctor d) {
         for (Patient patient : d.getPatients()) {
             patientListModel.addElement(patient.getName());
         }
     }
 
+    // EFFECTS: allows the user to enter a name and search their patients, if that patient is found, the details are
+    //          on the patient data Panel, otherwise the patient could not be found and an error message pops up
     public JButton searchButton() {
         JButton searchButton = new JButton("Search Patient");
         searchButton.addActionListener(new ActionListener() {
@@ -367,6 +424,8 @@ public class MainMenuUI extends JFrame {
         return searchButton;
     }
 
+    // EFFECTS: once a patient is added, this prompt is display to show the patient has successfully been added to this
+    //          doctor, additionally this closes the patient Data Panel
     public void sucessfullyAdded() {
         int option = JOptionPane.showConfirmDialog(MainMenuUI.this,
                 "Patient Successfully Added!",
@@ -379,7 +438,9 @@ public class MainMenuUI extends JFrame {
         }
     }
 
-    public JButton removePatientButton(Doctor d) {
+    // EFFECTS: a remove button, that once clicked prompts the user to confirm they want to remove this patient. If yes,
+    //          then the patient is removed from the doctor, If no, then the prompt is closed.
+    public JButton removePatientButton() {
         JButton removeButton = new JButton("Remove Patient");
         removeButton.addActionListener(new ActionListener() {
             @Override
@@ -391,17 +452,13 @@ public class MainMenuUI extends JFrame {
                             JOptionPane.YES_NO_OPTION);
                     if (option == JOptionPane.YES_OPTION) {
                         removePatientFromDoctor(selectedIndex);
-                    } else {
-                    JOptionPane.showMessageDialog(MainMenuUI.this,
-                            "Please select a patient to remove.",
-                            "No Patient Selected",
-                            JOptionPane.WARNING_MESSAGE);
-                }
+                    }
             }
         });
         return removeButton;
     }
 
+    // EFFECTS: a button that allows the user to change patient data (age, weight, height)
     public JButton changePatientButton(Patient p) {
         JButton changeButton = new JButton("Change Patient");
         changeButton.addActionListener(new ActionListener() {
@@ -420,6 +477,7 @@ public class MainMenuUI extends JFrame {
         return changeButton;
     }
 
+    // EFFECTS: ALlows the user to enter the new patient data they want to change (age, weight, height)
     public void changePatientAttribute(Patient p, String attribute) {
         String newValue = JOptionPane.showInputDialog(MainMenuUI.this,
                 "Enter new " + attribute + ":");
@@ -438,6 +496,8 @@ public class MainMenuUI extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: the search window that allows the user to enter a patient name and search for that patient
     public void searchWindow() {
         String name = JOptionPane.showInputDialog(this,"Enter Name");
         Patient p = doctor.searchPatient(name);
@@ -449,6 +509,8 @@ public class MainMenuUI extends JFrame {
         }
     }
 
+    // MODIFIES: doctor
+    // EFFECTS: removes the patient from the doctor, and patient list model, and closes the patient data panel
     public void removePatientFromDoctor(int selectedIndex) {
         Patient p = doctor.getPatients().get(selectedIndex);
         doctor.removePatient(p.getName());
@@ -459,36 +521,50 @@ public class MainMenuUI extends JFrame {
         repaint();
     }
 
+    // EFFECTS: displayed the medical records of a given patient
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public JScrollPane displayMedicalRecords(ArrayList<MedicalRecord> medicalHistory) {
         JPanel mr = new JPanel();
         mr.setLayout(new BoxLayout(mr, BoxLayout.Y_AXIS));
+        int wrappingWidth = 290;
+
         for (MedicalRecord m : medicalHistory) {
-            JLabel historyLabel = new JLabel("Date: " + m.getDate());
+            JLabel historyLabel = createWrappedLabel("Date: " + m.getDate(), wrappingWidth);
             historyLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            historyLabel.setBorder(new EmptyBorder(0, 25,0,0));
+            historyLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
             mr.add(historyLabel);
 
-            JLabel symptomsLabel = new JLabel("Symptoms: " + Arrays.toString(m.getSymptoms()));
+            JLabel symptomsLabel = createWrappedLabel("Symptoms: " + Arrays.toString(m.getSymptoms()), wrappingWidth);
             symptomsLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            symptomsLabel.setBorder(new EmptyBorder(0, 25,0,0));
+            symptomsLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
             mr.add(symptomsLabel);
 
-            JLabel prescriptionsLabel = new JLabel("Prescriptions: " + Arrays.toString(m.getPrescriptions()));
+            JLabel prescriptionsLabel = createWrappedLabel("Prescriptions: " + Arrays.toString(m.getPrescriptions()),
+                    wrappingWidth);
             prescriptionsLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            prescriptionsLabel.setBorder(new EmptyBorder(0, 25,0,0));;
+            prescriptionsLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
             mr.add(prescriptionsLabel);
 
-            JLabel doctorNotesLabel = new JLabel("Doctor's Notes: " + m.getDoctorNotes());
+            JLabel doctorNotesLabel = createWrappedLabel("Doctor's Notes: " + m.getDoctorNotes(), wrappingWidth);
             doctorNotesLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
             doctorNotesLabel.setBorder(new EmptyBorder(0, 25, 10, 0));
             mr.add(doctorNotesLabel);
         }
+
         JScrollPane medicalRecords = new JScrollPane(mr);
         medicalRecords.getVerticalScrollBar().setUnitIncrement(16);
-        medicalRecords.setBorder(new EmptyBorder(0,0,0,0));
+        medicalRecords.setBorder(new EmptyBorder(0, 0, 0, 0));
         return medicalRecords;
     }
 
+    // EFFECTS: allows the text to naturally wrap onto the next line
+    // Text Wrapping: https://stackoverflow.com/questions/2420742/make-a-jlabel-wrap-its-text-by-setting-a-max-width
+    public JLabel createWrappedLabel(String text, int width) {
+        return new JLabel("<html><div style='width: " + width + "px;'>" + text + "</div></html>");
+    }
+
+    // EFFECTS: creates a button that says new medical records, once pressed, allows the user to add a new medical
+    //          record
     public JButton newMedicalRecordButton(Patient p) {
         JButton button = new JButton("New Medical Record");
         button.addActionListener(new ActionListener() {
@@ -507,6 +583,10 @@ public class MainMenuUI extends JFrame {
         return button;
     }
 
+    // MODIFIES: this
+    // EFFECTS: Creates a new window that allows the user to enter information to create a new medical record, once the
+    //          add button is pressed, this medical record is added to this patient and the patient data panel is
+    //          updated with the nnew medical record added
     public void newMedicalRecordWindow(Patient p) {
         medicalRecordWindow = new JDialog();
         medicalRecordWindow.setLayout(new GridBagLayout());
@@ -535,6 +615,9 @@ public class MainMenuUI extends JFrame {
         medicalRecordWindow.setVisible(true);
     }
 
+    // MODIFES: this, p
+    // EFFECTS: Add button that allows the user to add a new medical record. once it is pressed, the mr is added to
+    //          this patient and the patient data panel is updated, also, the window is closed
     public JButton addButtonMR(Patient p, JDialog window) {
         JButton addButton = new JButton("Add");
         addButton.addActionListener(new ActionListener() {
@@ -550,6 +633,8 @@ public class MainMenuUI extends JFrame {
         return addButton;
     }
 
+    // EFFECTS: text fields for the add medical records window that allow the user to enter data to create a new
+    //          medical record
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void textBoxPaneMR() {
         JLabel date =  new JLabel(String.valueOf(java.time.LocalDate.now()));
@@ -592,6 +677,8 @@ public class MainMenuUI extends JFrame {
         medicalRecordWindow.add(doctorsNoteField, gridBagConstraints);
     }
 
+    // EFFECTS: makes a new medical record based on what is entered into the text fields in the add medical record
+    //          window
     public MedicalRecord makeMedicalRecord() {
         String date = String.valueOf(java.time.LocalDate.now());
         String[] symptoms = symptomField.getText().split(",");
@@ -601,6 +688,8 @@ public class MainMenuUI extends JFrame {
         return new MedicalRecord(date, symptoms, prescriptions, doctorsNote);
     }
 
+    // MODIFIES: this
+    // EFFECTS: settings menu that allows the user to change their name and password
     public void settingsMenu() {
         JDialog settingsMenu = new JDialog();
         settingsMenu.setTitle("Settings");
@@ -624,6 +713,7 @@ public class MainMenuUI extends JFrame {
         settingsMenu.setVisible(true);
     }
 
+    // EFFECTS: a button that once clicked will allow the user to change their name
     public JButton changeNameButton(JDialog settingsMenu) {
         JButton changeNameButton = new JButton("Change Name");
         changeNameButton.addActionListener(new ActionListener() {
@@ -636,17 +726,21 @@ public class MainMenuUI extends JFrame {
         return changeNameButton;
     }
 
+    // EFFECTS: a buttons that once pressed will allow the user to change their passowrd
     public JButton changePassowrdButton(JDialog settingsMenu) {
         JButton passwordChangeButton = new JButton("Change Password");
         passwordChangeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 changePassword();
+                settingsMenu.dispose();
             }
         });
         return passwordChangeButton;
     }
 
+    // MODIFES: doctor
+    // EFFECTS: allows the user enter their new name, also sets the texts on the top panel to reflect the updated name
     public void changeName() {
         String newName = JOptionPane.showInputDialog(MainMenuUI.this,
                 "Enter new name : ");
@@ -659,6 +753,8 @@ public class MainMenuUI extends JFrame {
         }
     }
 
+    // MODIFES: doctor
+    // EFFECTS: allows the user to enter a new password
     public void changePassword() {
         String newPassword = JOptionPane.showInputDialog(MainMenuUI.this,
                 "Enter new Password : ");

@@ -32,6 +32,13 @@ class DoctorTest {
     }
 
     @Test
+    void changeNanem() {
+        assertEquals(testDoctor.getName(), "Gregor");
+        testDoctor.setName("Kemi");
+        assertEquals(testDoctor.getName(), "Kemi");
+    }
+
+    @Test
     void testSetPasswordTrue() {
         testDoctor.setPassword("CPSC");
         assertTrue(testDoctor.checkPassword("CPSC"));

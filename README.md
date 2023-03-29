@@ -35,3 +35,56 @@ What a potential user will gain from this app:
 - As a user, I would like to be able to save my patients and their data to a file
 - As a user, I want to have the option to load my previous patients when I login 
 - As a user, I want to have the option to save patient data to file
+
+<h3>
+Instructions for Grader
+</h3>
+
+<h5>
+Please follow these step-by-step instructions to interact with the GUI:
+</h5>
+
+- Launch Application and you will be presented with the LoginScreenUI
+- To register and add a doctor click the signup button and enter the information requested (name, password)
+- Click the "Sign Up" button, and you will be redirected to the main menu UI
+
+<h5>
+Adding Patients to Doctors Record
+</h5>
+
+- Click the "Add Patient" button on the "Main Menu UI"
+- Fill in the required data for the Patient (name, age, weight, height)
+- Click the save button and a prompt will confirmation prompt will appear
+- Click "Yes" to confirm, and the patient will be added to this doctors
+- Repeat these steps to add several patients
+- 
+  <h5>
+  Adding Medical Records to Patients
+  </h5>
+
+- Click the name of a patient you wish to add a medical record to on the left scroll panel
+- Click the new Medical record Button in the top right corner
+- A prompt will appear to enter information to create a new medical record (symptoms, prescriptions, doctors note)
+- Click the add button and the medical record will be added to this patient
+- Repeat these steps to add several medical records
+
+<h5>
+Visual Component
+</h5>
+
+- The Visual Component is a logo that can be found on the "LoginScreenUI", "SignupUI", "LoginUI", and "MainMenuUI"
+
+<h5>
+Saving the state of the application
+</h5>
+
+- To Save the state of the application, click the logout button in the bottom left corner. You will be prompted to 
+save you progress, click yes and the current state of the application will be saved
+
+<h5>
+Loading the State of the Application from File
+</h5>
+
+- To load the state of the application, login with your credentials
+- A prompt will appear to load previous patients
+- Click "Yes" to load the previously saved state of the application

@@ -51,29 +51,25 @@ class JsonReaderTest extends JsonTest {
     }
 
     @Test
-    void testAddMedicalRecordJson() {
-        Patient p = new Patient("john", 1, 1, 1);
-        String[] symptomsList1 = {"cold", "cough"};
-        String[] presciptionList1 = {"tylonol", "ibo"};
-        MedicalRecord testmr1 = new MedicalRecord("2023-02-13", symptomsList1,
-                presciptionList1, "Patient is ill");
-        String[] symptomlist2 = {"dizzy"};
-        String[] presciptionList2 = {"tylonol", "ibo"};
-        MedicalRecord testmr2 = new MedicalRecord("2020-04-18", symptomlist2,
-                presciptionList2, "not feeling well");
-        p.addMedicalRecord(testmr2);
-        p.addMedicalRecord(testmr1);
-
-        JSONObject json1 = new JSONObject(testmr1.toJson());
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.put(json1);
+    public void testAddMedicalRecordJson() {
+        Patient patient = new Patient("john", 1, 1, 1);
+        JSONObject medicalRecordJson = new JSONObject();
+        medicalRecordJson.put("date", "2023-03-24");
+        medicalRecordJson.put("symptoms", new JSONArray(new String[]{"headache", "fever"}));
+        medicalRecordJson.put("prescriptions", new JSONArray(new String[]{"Ibuprofen", "Paracetamol"}));
+        medicalRecordJson.put("doctorNotes", "Patient needs rest and medication");
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("medicalRecords", jsonArray);
+        jsonObject.put("medicalRecords", new JSONArray(new JSONObject[]{medicalRecordJson}));
 
-        assertEquals(2, p.getMedicalRecord().size());
-        assertEquals(testmr1, p.getMedicalRecord().get(1));
-        assertEquals(testmr2, p.getMedicalRecord().get(0));
+        JsonReader.addMedicalRecordJson(patient, jsonObject);
+
+        assertEquals(1, patient.getMedicalRecord().size());
+        MedicalRecord addedMedicalRecord = patient.getMedicalRecord().get(0);
+        assertEquals("2023-03-24", addedMedicalRecord.getDate());
+        assertArrayEquals(new String[]{"headache", "fever"}, addedMedicalRecord.getSymptoms());
+        assertArrayEquals(new String[]{"Ibuprofen", "Paracetamol"}, addedMedicalRecord.getPrescriptions());
+        assertEquals("Patient needs rest and medication", addedMedicalRecord.getDoctorNotes());
     }
 
     @Test

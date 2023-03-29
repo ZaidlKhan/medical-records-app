@@ -94,26 +94,24 @@ public class JsonReader {
         d.addPatient(patient);
     }
 
-    public void addMedicalRecordJson(Patient p, JSONObject jsonObject) {
+    public static void addMedicalRecordJson(Patient p, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("medicalRecords");
 
         for (Object json: jsonArray) {
             JSONObject nextMedicalRecord = (JSONObject) json;
-            this.addMedicalRecord(p, nextMedicalRecord);
+
+            String date = nextMedicalRecord.getString("date");
+            JSONArray symptoms = nextMedicalRecord.getJSONArray("symptoms");
+            String[] stringSymptoms = makeStringArray(symptoms);
+            JSONArray prescriptions = nextMedicalRecord.getJSONArray("prescriptions");
+            String[] stringPrescriptions = makeStringArray(prescriptions);
+            String doctorsNote = nextMedicalRecord.getString("doctorNotes");
+
+            MedicalRecord mr = new MedicalRecord(date, stringSymptoms,
+                    stringPrescriptions, doctorsNote);
+            p.addMedicalRecord(mr);
         }
-    }
 
-    public void addMedicalRecord(Patient p, JSONObject jsonObject) {
-        String date = jsonObject.getString("date");
-        JSONArray symptoms = jsonObject.getJSONArray("symptoms");
-        String[] stringSymptoms = makeStringArray(symptoms);
-        JSONArray prescriptions = jsonObject.getJSONArray("prescriptions");
-        String[] stringPrescriptions = makeStringArray(prescriptions);
-        String doctorsNote = jsonObject.getString("doctorNotes");
-
-        MedicalRecord mr = new MedicalRecord(date, stringSymptoms,
-                stringPrescriptions, doctorsNote);
-        p.addMedicalRecord(mr);
     }
 
     public static String[] makeStringArray(JSONArray array) {

@@ -38,29 +38,23 @@ public class MainMenuUI extends JFrame {
     private final JLabel logo;
 
     // General Layout used: https://www.javatpoint.com/java-gridbaglayout
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public MainMenuUI(MediRecords mr, Doctor d) {
 
         this.mainJsonWriter = new JsonWriter("./data/MediRecords.json");
-
         lightColor = new Color(187, 210, 246);
-
         setSize(1000, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         doctor = d;
-
         ImageIcon logoIcon = new ImageIcon("data/image3.png");
         logo = new JLabel(new ImageIcon(logoIcon.getImage().getScaledInstance(300, -1,
                 Image.SCALE_SMOOTH)));
 
         setLayout(new BorderLayout());
-
         JPanel leftPanel = leftPanel(mr);
         add(leftPanel, BorderLayout.WEST);
         add(dashboardPanel(doctor), BorderLayout.NORTH);
         add(logo, BorderLayout.CENTER);
-
         setSize(800, 600);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -69,6 +63,11 @@ public class MainMenuUI extends JFrame {
 
         // Scrollbar Listener:
         // http://www.java2s.com/Tutorial/Java/0240__Swing/ListeningtoJListEventswithaListSelectionListener.htm
+        listListener(d);
+    }
+
+    // EFFECTS: listener that allows the user to select patients from the scroll pane on the left
+    private void listListener(Doctor d) {
         patientList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -121,7 +120,6 @@ public class MainMenuUI extends JFrame {
     // EFFECTS: add button that when pressed, will allow the user to add a new Patient, once a all the data of a new
     //          entered and the save button is clicked, the user will be asked to save the patient to file, If yes,
     //          then the Patient will be save to the JSON file, if no then the patient will not be constructed
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public JButton addButton(Doctor d) {
         JButton saveButton = new JButton("Add Patient");
         saveButton.addActionListener(new ActionListener() {
@@ -136,13 +134,7 @@ public class MainMenuUI extends JFrame {
                         JOptionPane.QUESTION_MESSAGE);
 
                 if (option == JOptionPane.YES_OPTION) {
-                    d.addPatient(p);
-                    patientListModel.addElement(p.getName());
-                    remove(patientDataPanel);
-                    patientDataPanel = null;
-                    revalidate();
-                    repaint();
-                    sucessfullyAdded();
+                    addPatientToModel(p, d);
                 } else {
                     JOptionPane.showMessageDialog(MainMenuUI.this,
                             "Patient Not Added to Records", "Not Added",
@@ -151,6 +143,18 @@ public class MainMenuUI extends JFrame {
             }
         });
         return saveButton;
+    }
+
+    // MODIFIES: this, d
+    // EFFECTS: add patients to doctor, and removes the patient data panel from the window
+    private void addPatientToModel(Patient p, Doctor d) {
+        d.addPatient(p);
+        patientListModel.addElement(p.getName());
+        remove(patientDataPanel);
+        patientDataPanel = null;
+        revalidate();
+        repaint();
+        sucessfullyAdded();
     }
 
     // EFFECTS: texts boxes for the name, age, weight, height fields where the doctor will enter the patient data
@@ -330,12 +334,28 @@ public class MainMenuUI extends JFrame {
     // MODIFIES: this
     // EFFECTS: displays the patients Details (name, age, weight, height, medical history) on the right side of the
     //          window
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void displayPatientDetails(Patient p) {
         if (patientDataPanel != null) {
             remove(patientDataPanel);
         }
+        infoPanelMaker(p);
+        String[] labels = {"Age: ", "Weight: ", "Height: "};
+        String[] values = {Integer.toString(p.getAge()), Integer.toString(p.getWeight()),
+                Integer.toString(p.getHeight())};
+        for (int i = 0; i < labels.length; i++) {
+            JLabel infoLabel = new JLabel(labels[i] + values[i]);
+            infoLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            infoLabel.setAlignmentX(LEFT_ALIGNMENT);
+            infoPanel.add(infoLabel);
+        }
+        medicalHistoryTitle(p);
+        add(patientDataPanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+    }
 
+    // EFFECTS: Creates the info panel where the doctor can view Patient Data
+    private void infoPanelMaker(Patient p) {
         patientDataPanel = new JPanel(new BorderLayout());
         infoPanel = new JPanel();
         infoPanel.setPreferredSize(new Dimension(425, 2000));
@@ -346,18 +366,10 @@ public class MainMenuUI extends JFrame {
         nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         nameLabel.setBorder(new EmptyBorder(10, 0, 2, 0));
         infoPanel.add(nameLabel);
+    }
 
-        String[] labels = {"Age: ", "Weight: ", "Height: "};
-        String[] values = {Integer.toString(p.getAge()), Integer.toString(p.getWeight()),
-                Integer.toString(p.getHeight())};
-
-        for (int i = 0; i < labels.length; i++) {
-            JLabel infoLabel = new JLabel(labels[i] + values[i]);
-            infoLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            infoLabel.setAlignmentX(LEFT_ALIGNMENT);
-            infoPanel.add(infoLabel);
-        }
-
+    // EFFECTS: adds a medical history label onto the info panel
+    private void medicalHistoryTitle(Patient p) {
         JLabel medicalHistoryTitle = new JLabel("Medical History:");
         medicalHistoryTitle.setFont(new Font("Tahoma", Font.BOLD, 16));
         medicalHistoryTitle.setAlignmentX(LEFT_ALIGNMENT);
@@ -368,10 +380,6 @@ public class MainMenuUI extends JFrame {
 
         patientDataPanel.add(infoPanel, BorderLayout.WEST);
         patientDataPanel.add(buttonPanel(p), BorderLayout.EAST);
-
-        add(patientDataPanel, BorderLayout.CENTER);
-        revalidate();
-        repaint();
     }
 
     // EFFECTS: Button Panel on the display Patient details window that has 3 buttons, remove Patient which removes the
@@ -522,39 +530,55 @@ public class MainMenuUI extends JFrame {
     }
 
     // EFFECTS: displayed the medical records of a given patient
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public JScrollPane displayMedicalRecords(ArrayList<MedicalRecord> medicalHistory) {
         JPanel mr = new JPanel();
         mr.setLayout(new BoxLayout(mr, BoxLayout.Y_AXIS));
         int wrappingWidth = 290;
 
         for (MedicalRecord m : medicalHistory) {
-            JLabel historyLabel = createWrappedLabel("Date: " + m.getDate(), wrappingWidth);
-            historyLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            historyLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
-            mr.add(historyLabel);
-
-            JLabel symptomsLabel = createWrappedLabel("Symptoms: " + Arrays.toString(m.getSymptoms()), wrappingWidth);
-            symptomsLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            symptomsLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
-            mr.add(symptomsLabel);
-
-            JLabel prescriptionsLabel = createWrappedLabel("Prescriptions: " + Arrays.toString(m.getPrescriptions()),
-                    wrappingWidth);
-            prescriptionsLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            prescriptionsLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
-            mr.add(prescriptionsLabel);
-
-            JLabel doctorNotesLabel = createWrappedLabel("Doctor's Notes: " + m.getDoctorNotes(), wrappingWidth);
-            doctorNotesLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-            doctorNotesLabel.setBorder(new EmptyBorder(0, 25, 10, 0));
-            mr.add(doctorNotesLabel);
+            mr.add(getDateLabel(wrappingWidth, m));
+            mr.add(getSymptomsLabel(wrappingWidth, m));
+            mr.add(getPrescriptionsLabel(wrappingWidth, m));
+            mr.add(getDoctorNotesLabel(wrappingWidth, m));
         }
 
         JScrollPane medicalRecords = new JScrollPane(mr);
         medicalRecords.getVerticalScrollBar().setUnitIncrement(16);
         medicalRecords.setBorder(new EmptyBorder(0, 0, 0, 0));
         return medicalRecords;
+    }
+
+    //EFFECTS: Returns the doctors note label
+    private JLabel getDoctorNotesLabel(int wrappingWidth, MedicalRecord m) {
+        JLabel doctorNotesLabel = createWrappedLabel("Doctor's Notes: " + m.getDoctorNotes(), wrappingWidth);
+        doctorNotesLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        doctorNotesLabel.setBorder(new EmptyBorder(0, 25, 10, 0));
+        return doctorNotesLabel;
+    }
+
+    //EFFECTS: Returns the prescription list label
+    private JLabel getPrescriptionsLabel(int wrappingWidth, MedicalRecord m) {
+        JLabel prescriptionsLabel = createWrappedLabel("Prescriptions: " + Arrays.toString(m.getPrescriptions()),
+                wrappingWidth);
+        prescriptionsLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        prescriptionsLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
+        return prescriptionsLabel;
+    }
+
+    //EFFECTS: Returns the Symptom list label
+    private JLabel getSymptomsLabel(int wrappingWidth, MedicalRecord m) {
+        JLabel symptomsLabel = createWrappedLabel("Symptoms: " + Arrays.toString(m.getSymptoms()), wrappingWidth);
+        symptomsLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        symptomsLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
+        return symptomsLabel;
+    }
+
+    //EFFECTS: Get this history label date
+    private JLabel getDateLabel(int wrappingWidth, MedicalRecord m) {
+        JLabel historyLabel = createWrappedLabel("Date: " + m.getDate(), wrappingWidth);
+        historyLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        historyLabel.setBorder(new EmptyBorder(0, 25, 0, 0));
+        return historyLabel;
     }
 
     // EFFECTS: allows the text to naturally wrap onto the next line

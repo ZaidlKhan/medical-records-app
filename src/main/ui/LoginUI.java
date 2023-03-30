@@ -84,7 +84,7 @@ public class LoginUI extends JFrame {
         return usernameLabel;
     }
 
-    // EFFECTS: Textbox that allows users to input their name
+    // EFFECTS: Text box that allows users to input their name
     public JTextField username() {
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(130, 30));

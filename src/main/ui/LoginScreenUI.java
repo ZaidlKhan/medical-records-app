@@ -16,26 +16,29 @@ import java.io.IOException;
 public class LoginScreenUI extends JFrame {
 
     private MediRecords mr;
-    private final JsonWriter mainJsonWriter;
     private final JsonReader mainJsonReader;
 
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public LoginScreenUI() {
         setSize(400, 550);
         setTitle("MediRecords");
         setLocationRelativeTo(null);
 
-        this.mainJsonWriter = new JsonWriter("./data/MediRecords.json");
         this.mainJsonReader = new JsonReader("./data/MediRecords.json");
-
         mr = loadMediRecords();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         ImageIcon imageIcon = new ImageIcon("data/image.png");
         JLabel imageLabel = new JLabel();
         imageLabel.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(300, -1, Image.SCALE_DEFAULT)));
 
+        JPanel buttonPanel = getButtonPanel(imageLabel);
+        buttonPanel.setBackground(new Color(145, 185, 246));
+        getContentPane().add(buttonPanel, BorderLayout.CENTER);
+        setVisible(true);
+    }
+
+    // EFFECTS: returns tha panel that has a login button, return button, and image on it
+    private JPanel getButtonPanel(JLabel imageLabel) {
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -53,11 +56,7 @@ public class LoginScreenUI extends JFrame {
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new Insets(0, 0, 10, 0);
         buttonPanel.add(imageLabel, gridBagConstraints);
-
-        buttonPanel.setBackground(new Color(145, 185, 246));
-
-        getContentPane().add(buttonPanel, BorderLayout.CENTER);
-        setVisible(true);
+        return buttonPanel;
     }
 
     // EFFECTS: a login Button that when Pressed sends the user to the loginUI

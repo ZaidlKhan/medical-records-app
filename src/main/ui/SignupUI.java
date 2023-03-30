@@ -15,7 +15,6 @@ public class SignupUI extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
 
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public SignupUI(MediRecords mr) {
         setSize(400, 550);
         setLocationRelativeTo(null);
@@ -43,6 +42,17 @@ public class SignupUI extends JFrame {
         userPanel.add(password(), gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
+        addButtonsAndImage(mr, userPanel);
+
+        userPanel.setBackground(new Color(145, 185, 246));
+
+        getContentPane().add(userPanel, BorderLayout.CENTER);
+        setVisible(true);
+    }
+
+    // MODIFIES: userPanel
+    // EFFECTS: adds a signup, return button, and image label to the UI
+    private void addButtonsAndImage(MediRecords mr, JPanel userPanel) {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new Insets(65, 0,1,0);
@@ -58,11 +68,6 @@ public class SignupUI extends JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new Insets(0, 0, 20, 0);
         userPanel.add(imageLabel(), gridBagConstraints);
-
-        userPanel.setBackground(new Color(145, 185, 246));
-
-        getContentPane().add(userPanel, BorderLayout.CENTER);
-        setVisible(true);
     }
 
     // EFFECTS: creates a JLabel that says "Name" on it

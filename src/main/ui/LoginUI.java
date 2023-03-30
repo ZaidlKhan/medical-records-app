@@ -19,9 +19,7 @@ public class LoginUI extends JFrame {
     private JPasswordField passwordField;
     private final JsonReader mainJsonReader;
 
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public LoginUI(MediRecords mr) {
-
         this.mainJsonReader = new JsonReader("./data/MediRecords.json");
         MediRecords mr1 = loadMediRecords(mr);
 
@@ -48,6 +46,15 @@ public class LoginUI extends JFrame {
         gridBagConstraints.gridy = 2;
         userPanel.add(password(), gridBagConstraints);
 
+        buttonsAndImageLabel(mr1, userPanel, gridBagConstraints);
+        userPanel.setBackground(new Color(145, 185, 246));
+        getContentPane().add(userPanel, BorderLayout.CENTER);
+        setVisible(true);
+    }
+
+    // MODIFIES: buttonPanel
+    // EFFECTS: add a return button, login button and image label to the UI
+    private void buttonsAndImageLabel(MediRecords mr1, JPanel userPanel, GridBagConstraints gridBagConstraints) {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
@@ -65,11 +72,6 @@ public class LoginUI extends JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new Insets(0, 0,20,0);
         userPanel.add(imageLabel(), gridBagConstraints);
-
-        userPanel.setBackground(new Color(145, 185, 246));
-
-        getContentPane().add(userPanel, BorderLayout.CENTER);
-        setVisible(true);
     }
 
     // EFFECTS: Shows a JPanel that says "name:"

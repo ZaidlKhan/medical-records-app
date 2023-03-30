@@ -276,7 +276,6 @@ public class MainMenuUI extends JFrame {
     // EFFECTS: This method creates and returns a JPanel containing a list of patients, "Add Patient" and "Search"
     //          buttons, a JScrollPane for the patient list, and "Settings" and "Logout" buttons in the bottom panel.
     //          This will represent the left side of the application
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public JPanel leftPanel(MediRecords mr) {
         patientListModel = new DefaultListModel<>();
         patientList = new JList<>(patientListModel);
@@ -294,7 +293,14 @@ public class MainMenuUI extends JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(searchButton(), gridBagConstraints);
+        patientScollPane(mr, bottomPanel, leftPanel);
+        leftPanel.setBackground(lightColor);
+        return leftPanel;
+    }
 
+    // MODIFIES: bottomPanel, buttonPanel
+    // EFFECTS: Creates the patient scroll pane on the left with the patient list
+    private void patientScollPane(MediRecords mr, JPanel bottomPanel, JPanel leftPanel) {
         JScrollPane patientScrollPane = new JScrollPane(patientList);
         patientScrollPane.setPreferredSize(new Dimension(150, 1000));
         patientScrollPane.setBorder(new EmptyBorder(0,0,0,0));
@@ -314,9 +320,6 @@ public class MainMenuUI extends JFrame {
         gridBagConstraints.anchor = GridBagConstraints.SOUTH;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(bottomPanel, gridBagConstraints);
-
-        leftPanel.setBackground(lightColor);
-        return leftPanel;
     }
 
     // MODIFIES: mainJsonWriter
@@ -573,7 +576,7 @@ public class MainMenuUI extends JFrame {
         return symptomsLabel;
     }
 
-    //EFFECTS: Get this history label date
+    //EFFECTS: Return a J label that says date date
     private JLabel getDateLabel(int wrappingWidth, MedicalRecord m) {
         JLabel historyLabel = createWrappedLabel("Date: " + m.getDate(), wrappingWidth);
         historyLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));

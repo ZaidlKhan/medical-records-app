@@ -35,18 +35,7 @@ public class JsonReader {
         StringBuilder contentBuilder = new StringBuilder();
         Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8);
 
-        try {
-            stream.forEach(contentBuilder::append);
-        } catch (Throwable var7) {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (Throwable var6) {
-                    var7.addSuppressed(var6);
-                }
-            }
-            throw var7;
-        }
+        stream.forEach(contentBuilder::append);
         stream.close();
         return contentBuilder.toString();
     }

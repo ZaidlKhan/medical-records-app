@@ -138,6 +138,21 @@
                 "weight": 92,
                 "age": 31,
                 "height": 196
+            },
+            {
+                "medicalRecords": [{
+                    "date": "2023-03-29",
+                    "symptoms": [
+                        "cold",
+                        " cough"
+                    ],
+                    "doctorNotes": "none",
+                    "prescriptions": ["ido"]
+                }],
+                "name": "steve",
+                "weight": 120,
+                "age": 20,
+                "height": 180
             }
         ],
         "name": "Dre"

@@ -231,7 +231,7 @@ public class MainMenuUI extends JFrame {
     }
 
     // MODIFIES: mainJsonWriter
-    // EFFECTS: Prompts the user to save the state of the application the the JSON file.
+    // EFFECTS: Prompts the user to save the state of the application the JSON file.
     public void saveDoctorOptions(MediRecords mr) {
         int option = JOptionPane.showConfirmDialog(MainMenuUI.this,
                 "Would you like to save your progress before logging out?", "Save Patients",
@@ -293,14 +293,14 @@ public class MainMenuUI extends JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(searchButton(), gridBagConstraints);
-        patientScollPane(mr, bottomPanel, leftPanel);
+        patientScrollPane(mr, bottomPanel, leftPanel);
         leftPanel.setBackground(lightColor);
         return leftPanel;
     }
 
     // MODIFIES: bottomPanel, buttonPanel
     // EFFECTS: Creates the patient scroll pane on the left with the patient list
-    private void patientScollPane(MediRecords mr, JPanel bottomPanel, JPanel leftPanel) {
+    private void patientScrollPane(MediRecords mr, JPanel bottomPanel, JPanel leftPanel) {
         JScrollPane patientScrollPane = new JScrollPane(patientList);
         patientScrollPane.setPreferredSize(new Dimension(150, 1000));
         patientScrollPane.setBorder(new EmptyBorder(0,0,0,0));

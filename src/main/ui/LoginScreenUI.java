@@ -37,7 +37,7 @@ public class LoginScreenUI extends JFrame {
     }
 
     // EFFECTS: returns tha panel that has a login button, return button, and image on it
-    private JPanel getButtonPanel(JLabel imageLabel) {
+    public JPanel getButtonPanel(JLabel imageLabel) {
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;

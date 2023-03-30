@@ -67,7 +67,7 @@ public class MainMenuUI extends JFrame {
     }
 
     // EFFECTS: listener that allows the user to select patients from the scroll pane on the left
-    private void listListener(Doctor d) {
+    public void listListener(Doctor d) {
         patientList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -784,7 +784,7 @@ public class MainMenuUI extends JFrame {
         }
     }
 
-    // MODIFES: doctor
+    // MODIFIES: doctor
     // EFFECTS: allows the user to enter a new password
     public void changePassword() {
         String newPassword = JOptionPane.showInputDialog(MainMenuUI.this,

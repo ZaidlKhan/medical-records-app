@@ -28,6 +28,17 @@ public class LoginUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel userPanel = new JPanel(new GridBagLayout());
 
+        GridBagConstraints gridBagConstraints = usernameAndPassword(userPanel);
+
+        buttonsAndImageLabel(mr1, userPanel, gridBagConstraints);
+        userPanel.setBackground(new Color(145, 185, 246));
+        getContentPane().add(userPanel, BorderLayout.CENTER);
+        setVisible(true);
+    }
+
+    // MODIFIES: userpanel
+    // EFFECTS: adds username and password label to the user panel and their given text boxes.
+    public GridBagConstraints usernameAndPassword(JPanel userPanel) {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill =  GridBagConstraints.HORIZONTAL;
         gridBagConstraints.gridx = 1;
@@ -45,16 +56,12 @@ public class LoginUI extends JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         userPanel.add(password(), gridBagConstraints);
-
-        buttonsAndImageLabel(mr1, userPanel, gridBagConstraints);
-        userPanel.setBackground(new Color(145, 185, 246));
-        getContentPane().add(userPanel, BorderLayout.CENTER);
-        setVisible(true);
+        return gridBagConstraints;
     }
 
     // MODIFIES: buttonPanel
     // EFFECTS: add a return button, login button and image label to the UI
-    private void buttonsAndImageLabel(MediRecords mr1, JPanel userPanel, GridBagConstraints gridBagConstraints) {
+    public void buttonsAndImageLabel(MediRecords mr1, JPanel userPanel, GridBagConstraints gridBagConstraints) {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;

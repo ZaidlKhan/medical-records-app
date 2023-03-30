@@ -52,7 +52,7 @@ public class SignupUI extends JFrame {
 
     // MODIFIES: userPanel
     // EFFECTS: adds a signup, return button, and image label to the UI
-    private void addButtonsAndImage(MediRecords mr, JPanel userPanel) {
+    public void addButtonsAndImage(MediRecords mr, JPanel userPanel) {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new Insets(65, 0,1,0);

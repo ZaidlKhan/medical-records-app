@@ -1,74 +1,21 @@
 {"registeredDoctors": [
     {
         "password": "12345",
-        "patients": [
-            {
-                "medicalRecords": [{
-                    "date": "2023-04-11",
-                    "symptoms": [
-                        "cold",
-                        "cough\t"
-                    ],
-                    "doctorNotes": "none",
-                    "prescriptions": ["Covid"]
-                }],
-                "name": "steve",
-                "weight": 100,
-                "age": 12,
-                "height": 190
-            },
-            {
-                "medicalRecords": [{
-                    "date": "2023-04-12",
-                    "symptoms": [
-                        "dasd",
-                        "dasda"
-                    ],
-                    "doctorNotes": "dsanfasjoiekqw",
-                    "prescriptions": [
-                        "dafas",
-                        "dsafas"
-                    ]
-                }],
-                "name": "Drake",
-                "weight": 90,
-                "age": 35,
-                "height": 190
-            },
-            {
-                "medicalRecords": [
-                    {
-                        "date": "2023-04-12",
-                        "symptoms": ["fasfsa"],
-                        "doctorNotes": "fasfas",
-                        "prescriptions": ["fasfas"]
-                    },
-                    {
-                        "date": "2023-04-12",
-                        "symptoms": ["fasfas"],
-                        "doctorNotes": "fsafas",
-                        "prescriptions": ["fasfas"]
-                    },
-                    {
-                        "date": "2023-04-12",
-                        "symptoms": ["dsad"],
-                        "doctorNotes": "dsada",
-                        "prescriptions": ["dasdas"]
-                    }
+        "patients": [{
+            "medicalRecords": [{
+                "date": "2023-04-11",
+                "symptoms": [
+                    "cold",
+                    "cough\t"
                 ],
-                "name": "Rod",
-                "weight": 75,
-                "age": 90,
-                "height": 190
-            },
-            {
-                "medicalRecords": [],
-                "name": "lebron",
-                "weight": 190,
-                "age": 36,
-                "height": 190
-            }
-        ],
+                "doctorNotes": "none",
+                "prescriptions": ["Covid"]
+            }],
+            "name": "steve",
+            "weight": 100,
+            "age": 12,
+            "height": 190
+        }],
         "name": "Dre"
     },
     {
@@ -81,5 +28,49 @@
             "height": 23
         }],
         "name": "Drake"
+    },
+    {
+        "password": "123",
+        "patients": [
+            {
+                "medicalRecords": [{
+                    "date": "2023-04-12",
+                    "symptoms": [
+                        "fhsajfaos",
+                        "fsajnifas"
+                    ],
+                    "doctorNotes": "fjsai0fijaso",
+                    "prescriptions": [
+                        "fjsaiofjoasi",
+                        "fsanjifjas"
+                    ]
+                }],
+                "name": "Ryan",
+                "weight": 100,
+                "age": 19,
+                "height": 180
+            },
+            {
+                "medicalRecords": [{
+                    "date": "2023-04-12",
+                    "symptoms": [
+                        "djosiadojasfo",
+                        "dashiudiasud",
+                        "dsnidias\t"
+                    ],
+                    "doctorNotes": "djasiofjoas",
+                    "prescriptions": [
+                        "fasiofasj",
+                        "fasnufias",
+                        "fansfo\t"
+                    ]
+                }],
+                "name": "Steven",
+                "weight": 82,
+                "age": 21,
+                "height": 190
+            }
+        ],
+        "name": "ZaidKhan"
     }
 ]}

@@ -23,7 +23,6 @@ public class MedicalRecordsApp {
 
         this.mainJsonWriter = new JsonWriter("./data/MediRecords.json");
         this.mainJsonReader = new JsonReader("./data/MediRecords.json");
-
         runApp();
     }
 

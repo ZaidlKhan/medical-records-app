@@ -88,3 +88,59 @@ Loading the State of the Application from File
 - To load the state of the application, login with your credentials
 - A prompt will appear to load previous patients
 - Click "Yes" to load the previously saved state of the application
+
+<h5>
+Phase 4: Task 2
+<h6>
+Note: user must first log out then exits application for to prints out event log
+</h6>
+</h5>
+
+- Wed Apr 12 18:19:33 PDT 2023
+- ZaidKhan added to MediRecords
+- 
+- Wed Apr 12 18:19:42 PDT 2023
+- ZaidKhan added to Ryan to their Patient list
+- 
+- Wed Apr 12 18:19:54 PDT 2023
+- ZaidKhan added to Steven to their Patient list
+- 
+- Wed Apr 12 18:20:04 PDT 2023
+- New Medical record added to Steven
+- 
+- Wed Apr 12 18:20:13 PDT 2023 
+- New Medical record added to Ryan 
+- 
+- Wed Apr 12 18:20:46 PDT 2023 
+- ZaidKhan added to Richard to their Patient list 
+- 
+- Wed Apr 12 18:20:56 PDT 2023 
+- New Medical record added to Richard 
+- 
+- Wed Apr 12 18:21:09 PDT 2023 
+- ZaidKhan removed Richard from their Patient list 
+- 
+- Wed Apr 12 18:21:17 PDT 2023 
+- Ryan changed weight to 100 
+- 
+- Wed Apr 12 18:21:24 PDT 2023 
+- ZaidKhan changed their password
+
+<h5>
+Phase 4: Task 3
+</h5>
+
+<p>
+If I had more time to work on this project, I would 
+definitely consider refactoring the `MainMenuUI` class. Currently,
+this class has too many methods, and could be simplified into other classes.
+We can refactor the UI-related method to separate classes to have a better 
+separation between the UI and methods that make the program run.
+I would also implement exception handling, the application would become more
+robust and user-friendly. This would involve adding try-catch blocks where necessary, 
+particularly when working with file I/O, JSON parsing, or other operations that may
+result in errors. Furthermore, adding input validation checks would help ensure that the application
+processes only valid data and responds appropriately to incorrect or malformed inputs.
+These changes would improve the overall reliability and stability of my application.
+</p>
+

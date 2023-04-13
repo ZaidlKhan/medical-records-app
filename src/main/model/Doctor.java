@@ -72,7 +72,7 @@ public class Doctor implements Writable {
             if (p.getName().equals(name)) {
                 patients.remove(i);
                 EventLog.getInstance().logEvent(new Event(this.getName()
-                        + " removed from " + p.getName() + " list"));
+                        + " removed " + p.getName() + " from their Patient list"));
                 return true;
             }
         }

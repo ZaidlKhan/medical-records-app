@@ -12,12 +12,14 @@ public class Doctor implements Writable {
     private String name;
     private String password;
     private ArrayList<Patient> patients;
+    private boolean isLoading;
 
 
     public Doctor(String name, String password) {
         this.name = name;
         this.password = password;
         this.patients = new ArrayList<Patient>();
+        this.isLoading = false;
     }
 
     public String getName() {
@@ -36,12 +38,14 @@ public class Doctor implements Writable {
     // EFFECTS: changes the password to the given password
     public void setPassword(String newPassword) {
         this.password = newPassword;
+        EventLog.getInstance().logEvent(new Event(this.getName()+ " changed their password"));
     }
 
     //MODIFIES: this
     //EFFECTS: changes the name of the doctor
     public void setName(String newName) {
         this.name = newName;
+        EventLog.getInstance().logEvent(new Event(this.getName()+ " changed their name to " + newName));
     }
 
     // EFFECTS: return true if the password is correct
@@ -54,6 +58,10 @@ public class Doctor implements Writable {
     //          Doctor
     public void addPatient(Patient p) {
         this.patients.add(p);
+        if (isLoading) {
+            EventLog.getInstance().logEvent(new Event(this.getName() + " added to " +
+                    p.getName() + " to their Patient list"));
+        }
     }
 
     // MODIFIES: this
@@ -63,6 +71,8 @@ public class Doctor implements Writable {
             Patient p = patients.get(i);
             if (p.getName().equals(name)) {
                 patients.remove(i);
+                EventLog.getInstance().logEvent(new Event(this.getName() +
+                        " removed from " + p.getName() + " list"));
                 return true;
             }
         }
@@ -98,5 +108,16 @@ public class Doctor implements Writable {
         }
 
         return jsonArray;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets the loading status to allows for events to be logged if true
+    public void setLoading(boolean isLoading) {
+        this.isLoading = isLoading;
+    }
+
+    // EFFECTS: returns the loading status
+    public boolean getLoading() {
+        return this.isLoading;
     }
 }

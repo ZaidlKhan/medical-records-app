@@ -10,9 +10,11 @@ import java.util.Iterator;
 public class MediRecords {
 
     private ArrayList<Doctor> registeredDoctors;
+    private boolean isLoading;
 
     public MediRecords() {
         this.registeredDoctors = new ArrayList<Doctor>();
+        this.isLoading = false;
     }
 
     public ArrayList<Doctor> getRegisteredDoctor() {
@@ -23,6 +25,9 @@ public class MediRecords {
     // EFFECTS: adds the doctor to the registeredDoctors
     public void addDoctor(Doctor d) {
         this.registeredDoctors.add(d);
+        if (isLoading) {
+            EventLog.getInstance().logEvent(new Event(d.getName() + " added to MediRecords"));
+        }
     }
 
     // REQUIRES: registeredDoctors.size > 0
@@ -51,6 +56,17 @@ public class MediRecords {
             jsonArray.put(d.toJson());
         }
         return jsonArray;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets the loading status to allows for events to be logged if true
+    public void setLoadingModel(boolean isLoading) {
+        this.isLoading = isLoading;
+    }
+
+    // EFFECTS: returns the loading status
+    public boolean getLoadingModel() {
+        return this.isLoading;
     }
 
 }

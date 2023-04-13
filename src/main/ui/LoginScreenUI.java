@@ -1,8 +1,12 @@
 package ui;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import model.Event;
+import model.EventLog;
 import model.MediRecords;
 import persistence.JsonReader;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -34,7 +38,14 @@ public class LoginScreenUI extends JFrame {
         buttonPanel.setBackground(new Color(145, 185, 246));
         getContentPane().add(buttonPanel, BorderLayout.CENTER);
         setVisible(true);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                printEventsOnClose();
+            }
+        });
     }
+
 
     // EFFECTS: returns tha panel that has a login button, return button, and image on it
     public JPanel getButtonPanel(JLabel imageLabel) {
@@ -89,5 +100,12 @@ public class LoginScreenUI extends JFrame {
             System.out.println("Unable to read from file: ./data/Medirecords.json");
         }
         return mr;
+    }
+
+    private void printEventsOnClose() {
+        EventLog eventLog = EventLog.getInstance();
+        for (Event event : eventLog) {
+            System.out.println(event);
+        }
     }
 }

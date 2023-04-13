@@ -59,7 +59,9 @@ public class MainMenuUI extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
+        mr.setLoadingModel(false);
         loadPatients(doctor);
+        mr.setLoadingModel(true);
 
         // Scrollbar Listener:
         // http://www.java2s.com/Tutorial/Java/0240__Swing/ListeningtoJListEventswithaListSelectionListener.htm
@@ -148,7 +150,9 @@ public class MainMenuUI extends JFrame {
     // MODIFIES: this, d
     // EFFECTS: add patients to doctor, and removes the patient data panel from the window
     private void addPatientToModel(Patient p, Doctor d) {
+        d.setLoading(true);
         d.addPatient(p);
+        d.setLoading(false);
         patientListModel.addElement(p.getName());
         remove(patientDataPanel);
         patientDataPanel = null;
@@ -513,6 +517,7 @@ public class MainMenuUI extends JFrame {
         String name = JOptionPane.showInputDialog(this,"Enter Name");
         Patient p = doctor.searchPatient(name);
         if (p != null) {
+            remove(logo);
             displayPatientDetails(p);
         } else {
             JOptionPane.showMessageDialog(this, "Patient not found!",
@@ -650,7 +655,9 @@ public class MainMenuUI extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                p.setLoading(true);
                 p.addMedicalRecord(makeMedicalRecord());
+                p.setLoading(false);
                 window.dispose();
                 displayPatientDetails(p);
                 revalidate();
@@ -770,7 +777,7 @@ public class MainMenuUI extends JFrame {
         return passwordChangeButton;
     }
 
-    // MODIFES: doctor
+    // MODIFIES: doctor
     // EFFECTS: allows the user enter their new name, also sets the texts on the top panel to reflect the updated name
     public void changeName() {
         String newName = JOptionPane.showInputDialog(MainMenuUI.this,
@@ -790,7 +797,6 @@ public class MainMenuUI extends JFrame {
         String newPassword = JOptionPane.showInputDialog(MainMenuUI.this,
                 "Enter new Password : ");
         if (newPassword != null && !newPassword.isEmpty()) {
-            doctor.setName(newPassword);
             JOptionPane.showMessageDialog(this, "Password Successfully Changed");
             doctor.setPassword(newPassword);
             revalidate();

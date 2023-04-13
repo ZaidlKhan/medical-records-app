@@ -121,7 +121,13 @@ class DoctorTest {
         expectedArray.put(expectedPatient);
 
         assertEquals(expectedArray.toString(), testDoctor.patientsToJson().toString());
+    }
 
+    @Test
+    void testSetLoading() {
+        assertFalse(testDoctor.getLoading());
+        testDoctor.setLoading(true);
+        assertTrue(testDoctor.getLoading());
     }
 
 }

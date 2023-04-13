@@ -15,6 +15,7 @@ public class Patient implements Writable {
     private int weight;                                       // weight of patient in kg
     private int height;                                       // height of patient in cm
     private ArrayList<MedicalRecord> medicalRecords;          // date of past visits
+    private boolean isLoading;
 
     public Patient(String name, int age, int weight, int height) {
         this.name = name;
@@ -22,6 +23,7 @@ public class Patient implements Writable {
         this.weight = weight;
         this.height = height;
         this.medicalRecords = new ArrayList<MedicalRecord>();
+        this.isLoading = false;
     }
 
     // MODIFIES: this
@@ -29,6 +31,9 @@ public class Patient implements Writable {
     //          medical records the patient already has
     public void addMedicalRecord(MedicalRecord mr) {
         this.medicalRecords.add(mr);
+        if (isLoading) {
+            EventLog.getInstance().logEvent(new Event("New Medical record added to " + this.getName()));
+        }
     }
 
     // REQUIRES: this.medicalRecords.size() > 0
@@ -48,25 +53,28 @@ public class Patient implements Writable {
     // EFFECTS: sets the name of the object
     public void setName(String name) {
         this.name = name;
+        EventLog.getInstance().logEvent(new Event(this.getName() + " changed name to " + name));
     }
-
 
     // MODIFIES: this
     // EFFECTS: sets the age of the object
     public void setAge(int age) {
         this.age = age;
+        EventLog.getInstance().logEvent(new Event(this.getName() + " changed age to " + age));
     }
 
     // MODIFIES: this
     // EFFECTS: Sets the weight of the object
     public void setWeight(int weight) {
         this.weight = weight;
+        EventLog.getInstance().logEvent(new Event(this.getName() + " changed weight to " + weight));
     }
 
     // MODIFIES: this
     // EFFECTS: Sets the height of the object
     public void setHeight(int height) {
         this.height = height;
+        EventLog.getInstance().logEvent(new Event(this.getName() + " changed height to " + height));
     }
 
     public String getName() {
@@ -107,6 +115,16 @@ public class Patient implements Writable {
         }
 
         return jsonArray;
+    }
 
+    // MODIFIES: this
+    // EFFECTS: sets the loading status to allows for events to be logged if true
+    public void setLoading(boolean isLoading) {
+        this.isLoading = isLoading;
+    }
+
+    // EFFECTS: returns the loading status
+    public boolean getLoading() {
+        return this.isLoading;
     }
 }

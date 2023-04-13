@@ -127,6 +127,10 @@ class PatientTest {
 
     }
 
-
-
+    @Test
+    void testSetLoading() {
+        assertFalse(testPatient.getLoading());
+        testPatient.setLoading(true);
+        assertTrue(testPatient.getLoading());
+    }
 }

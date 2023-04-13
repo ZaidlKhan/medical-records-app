@@ -48,5 +48,12 @@ class MediRecordsTest {
         assertNull(testMedirecords.searchDoctor("joe"));
     }
 
+    @Test
+    void testSetLoading() {
+        assertFalse(testMedirecords.getLoadingModel());
+        testMedirecords.setLoadingModel(true);
+        assertTrue(testMedirecords.getLoadingModel());
+    }
+
 
 }

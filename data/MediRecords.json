@@ -3,205 +3,83 @@
         "password": "12345",
         "patients": [
             {
-                "medicalRecords": [
-                    {
-                        "date": "2023-03-26",
-                        "symptoms": [
-                            "Certified Lover Boy",
-                            " Toronto Man\t\t"
-                        ],
-                        "doctorNotes": "None",
-                        "prescriptions": ["None\t"]
-                    },
-                    {
-                        "date": "2023-03-27",
-                        "symptoms": [
-                            "Bruising",
-                            " Swelling"
-                        ],
-                        "doctorNotes": "Patient is recovering well from recent surgery. Incision site is clean and healing properly. Recommended to gradually increase physical activity as tolerated",
-                        "prescriptions": ["Albuterol"]
-                    },
-                    {
-                        "date": "2023-03-28",
-                        "symptoms": ["Drake\t"],
-                        "doctorNotes": "123",
-                        "prescriptions": ["123\t123"]
-                    }
-                ],
-                "name": "Drake",
-                "weight": 180,
-                "age": 36,
-                "height": 82
-            },
-            {
-                "medicalRecords": [
-                    {
-                        "date": "2023-03-20",
-                        "symptoms": [
-                            "fever",
-                            " fatigue",
-                            " nasua"
-                        ],
-                        "doctorNotes": "Patient presented with complaints of persistent headache and fatigue. Recommended increasing water intake, improving sleep hygiene, and monitoring symptoms. Will follow up in 2 weeks to reassess the condition.",
-                        "prescriptions": [
-                            "Ibuprofen",
-                            " Aspirin"
-                        ]
-                    },
-                    {
-                        "date": "2023-03-26",
-                        "symptoms": [
-                            "Muscle aches",
-                            " Joint pain",
-                            " Shortness of breath"
-                        ],
-                        "doctorNotes": "Patient reported experiencing shortness of breath and chest pain during physical exertion. Referred to a cardiologist for further evaluation and scheduled a stress test. Advised the patient to avoid strenuous activities until cleared by the specialist.",
-                        "prescriptions": [
-                            "Loratadine",
-                            " Ibuprofen"
-                        ]
-                    },
-                    {
-                        "date": "2023-03-27",
-                        "symptoms": [
-                            "Weight loss",
-                            " Loss of appetite"
-                        ],
-                        "doctorNotes": "Conducted a routine physical examination and discussed the patient's overall health status. No significant findings or concerns at this time. Encouraged the patient to maintain a healthy lifestyle and follow a balanced diet. Scheduled a follow-up visit in 12 months",
-                        "prescriptions": [
-                            "Metformin",
-                            " Hydrochlorothiazide"
-                        ]
-                    }
-                ],
-                "name": "Kanye",
-                "weight": 76,
-                "age": 45,
-                "height": 171
-            },
-            {
-                "medicalRecords": [],
-                "name": "Flacko",
-                "weight": 71,
-                "age": 34,
-                "height": 174
-            },
-            {
-                "medicalRecords": [],
-                "name": "Snoop",
-                "weight": 82,
-                "age": 51,
-                "height": 192
-            },
-            {
                 "medicalRecords": [{
-                    "date": "2023-03-27",
-                    "symptoms": [
-                        "Runny nose",
-                        " Chest congestion"
-                    ],
-                    "doctorNotes": "Patient might have COVID-19",
-                    "prescriptions": [
-                        "Sertraline",
-                        " Acetaminophen"
-                    ]
-                }],
-                "name": "Dana White",
-                "weight": 88,
-                "age": 53,
-                "height": 196
-            },
-            {
-                "medicalRecords": [],
-                "name": "David Blaine",
-                "weight": 77,
-                "age": 49,
-                "height": 184
-            },
-            {
-                "medicalRecords": [{
-                    "date": "2023-03-27",
-                    "symptoms": [
-                        "Ankle Pain",
-                        " Knee Pain",
-                        " Shoulder Pain",
-                        " Wrist Pain"
-                    ],
-                    "doctorNotes": "Patient has severe Pain all through his body, will most likely not play the rest of the season.",
-                    "prescriptions": [
-                        "Ibuprofen",
-                        " Aspirin"
-                    ]
-                }],
-                "name": "Kawhi Lenoard",
-                "weight": 92,
-                "age": 31,
-                "height": 196
-            },
-            {
-                "medicalRecords": [{
-                    "date": "2023-03-29",
+                    "date": "2023-04-11",
                     "symptoms": [
                         "cold",
-                        " cough"
+                        "cough\t"
                     ],
                     "doctorNotes": "none",
-                    "prescriptions": ["ido"]
+                    "prescriptions": ["Covid"]
                 }],
                 "name": "steve",
-                "weight": 120,
-                "age": 20,
-                "height": 180
+                "weight": 100,
+                "age": 12,
+                "height": 190
+            },
+            {
+                "medicalRecords": [{
+                    "date": "2023-04-12",
+                    "symptoms": [
+                        "dasd",
+                        "dasda"
+                    ],
+                    "doctorNotes": "dsanfasjoiekqw",
+                    "prescriptions": [
+                        "dafas",
+                        "dsafas"
+                    ]
+                }],
+                "name": "Drake",
+                "weight": 90,
+                "age": 35,
+                "height": 190
+            },
+            {
+                "medicalRecords": [
+                    {
+                        "date": "2023-04-12",
+                        "symptoms": ["fasfsa"],
+                        "doctorNotes": "fasfas",
+                        "prescriptions": ["fasfas"]
+                    },
+                    {
+                        "date": "2023-04-12",
+                        "symptoms": ["fasfas"],
+                        "doctorNotes": "fsafas",
+                        "prescriptions": ["fasfas"]
+                    },
+                    {
+                        "date": "2023-04-12",
+                        "symptoms": ["dsad"],
+                        "doctorNotes": "dsada",
+                        "prescriptions": ["dasdas"]
+                    }
+                ],
+                "name": "Rod",
+                "weight": 75,
+                "age": 90,
+                "height": 190
+            },
+            {
+                "medicalRecords": [],
+                "name": "lebron",
+                "weight": 190,
+                "age": 36,
+                "height": 190
             }
         ],
         "name": "Dre"
     },
     {
-        "password": "123",
+        "password": "12345",
         "patients": [{
             "medicalRecords": [],
-            "name": "123",
-            "weight": 123,
+            "name": "Steven",
+            "weight": 1231,
             "age": 123,
-            "height": 123
+            "height": 23
         }],
-        "name": "dave"
-    },
-    {
-        "password": "123",
-        "patients": [{
-            "medicalRecords": [
-                {
-                    "date": "2023-03-29",
-                    "symptoms": [
-                        "dsaodn",
-                        "lol\t"
-                    ],
-                    "doctorNotes": "dsakfjasn",
-                    "prescriptions": [
-                        "dasd",
-                        "ldsad"
-                    ]
-                },
-                {
-                    "date": "2023-03-29",
-                    "symptoms": ["das"],
-                    "doctorNotes": "da",
-                    "prescriptions": ["das"]
-                },
-                {
-                    "date": "2023-03-29",
-                    "symptoms": ["dsa"],
-                    "doctorNotes": "das",
-                    "prescriptions": ["das"]
-                }
-            ],
-            "name": "Rob",
-            "weight": 90,
-            "age": 80,
-            "height": 170
-        }],
-        "name": "BOB"
+        "name": "Drake"
     }
 ]}

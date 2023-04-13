@@ -110,7 +110,9 @@ public class SignupUI extends JFrame {
         JButton signupButton = new JButton("Sign Up");
         signupButton.addActionListener(e -> {
             Doctor d = new Doctor(getUsername(), getPassword());
+            mediRecords.setLoadingModel(true);
             mediRecords.addDoctor(d);
+            mediRecords.setLoadingModel(false);
             new MainMenuUI(mediRecords, d);
         });
         return signupButton;

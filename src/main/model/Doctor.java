@@ -38,14 +38,14 @@ public class Doctor implements Writable {
     // EFFECTS: changes the password to the given password
     public void setPassword(String newPassword) {
         this.password = newPassword;
-        EventLog.getInstance().logEvent(new Event(this.getName()+ " changed their password"));
+        EventLog.getInstance().logEvent(new Event(this.getName() + " changed their password"));
     }
 
     //MODIFIES: this
     //EFFECTS: changes the name of the doctor
     public void setName(String newName) {
         this.name = newName;
-        EventLog.getInstance().logEvent(new Event(this.getName()+ " changed their name to " + newName));
+        EventLog.getInstance().logEvent(new Event(this.getName() + " changed their name to " + newName));
     }
 
     // EFFECTS: return true if the password is correct
@@ -59,8 +59,8 @@ public class Doctor implements Writable {
     public void addPatient(Patient p) {
         this.patients.add(p);
         if (isLoading) {
-            EventLog.getInstance().logEvent(new Event(this.getName() + " added to " +
-                    p.getName() + " to their Patient list"));
+            EventLog.getInstance().logEvent(new Event(this.getName() + " added to " + p.getName()
+                    + " to their Patient list"));
         }
     }
 
@@ -71,8 +71,8 @@ public class Doctor implements Writable {
             Patient p = patients.get(i);
             if (p.getName().equals(name)) {
                 patients.remove(i);
-                EventLog.getInstance().logEvent(new Event(this.getName() +
-                        " removed from " + p.getName() + " list"));
+                EventLog.getInstance().logEvent(new Event(this.getName()
+                        + " removed from " + p.getName() + " list"));
                 return true;
             }
         }
